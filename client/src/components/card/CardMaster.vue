@@ -12,10 +12,14 @@ const curr_api = inject("curr_api");
   <div>
     <edit_buttons :card="card"></edit_buttons>
 
-    <img :src="`${curr_api}/card/get_image?id=${card['card_id']}.jpg`" alt="card image">
+    <img :src="`${curr_api}/card/get_image?id=${card['card_id']}.jpg`" alt="card image" class="card_image">
   </div>
 </template>
 
 <style scoped>
+
+.card_image {
+  width: 120px;
+}
 
 </style>

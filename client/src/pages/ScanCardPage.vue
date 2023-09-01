@@ -1,6 +1,6 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed, onUnmounted} from "vue";
-import CardMasterComponent from "../components/card/CardMasterComponent.vue";
+import CardMasterComponent from "../components/card/CardMaster.vue";
 
 // let props = defineProps(["test"]);
 const curr_api = inject("curr_api");
@@ -17,10 +17,6 @@ let sliders_mapping = ref([
   {
     "title": "median_blur",
     "range": [0, 20, 10]
-  },
-  {
-    "title": "gauss_blur",
-    "range": [1, 100, 50]
   },
   {
     "title": "auto_bright_bias",

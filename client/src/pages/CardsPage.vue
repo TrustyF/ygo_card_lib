@@ -9,9 +9,15 @@ const curr_api = inject("curr_api");
 </script>
 
 <template>
-<card-list></card-list>
+
+  <div class="card_list">
+    <card-list></card-list>
+  </div>
 </template>
 
 <style scoped>
-
+.card_list {
+  margin: auto;
+  width: 80%;
+}
 </style>
