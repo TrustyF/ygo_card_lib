@@ -1,6 +1,7 @@
 <script setup>
-import {inject, onMounted, watch, ref, computed} from "vue";
+import {inject} from "vue";
 import Edit_buttons from "./sub_components/EditButtons.vue";
+import Card_image from "./sub_components/CardImage.vue";
 
 let props = defineProps(["card"]);
 const curr_api = inject("curr_api");
@@ -11,15 +12,8 @@ const curr_api = inject("curr_api");
 <template>
   <div>
     <edit_buttons :card="card"></edit_buttons>
+    <card_image :card="card"></card_image>
 
-    <img :src="`${curr_api}/card/get_image?id=${card['card_id']}.jpg`" alt="card image" class="card_image">
   </div>
 </template>
 
-<style scoped>
-
-.card_image {
-  width: 120px;
-}
-
-</style>

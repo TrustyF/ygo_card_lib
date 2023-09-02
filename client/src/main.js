@@ -13,6 +13,7 @@ const app = createApp(App)
 
 app.provide("curr_api", devMode ? local_api : server_api);
 app.provide("devMode", devMode);
+app.provide("card_size", [168,246]);
 app.use(router)
 
 
