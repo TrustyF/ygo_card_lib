@@ -1,9 +1,11 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed, onUnmounted} from "vue";
 import CardMasterComponent from "../components/card/CardMaster.vue";
+import CardList from "../components/card/CardList.vue";
 
 // let props = defineProps(["test"]);
 const curr_api = inject("curr_api");
+const is_card_updated = inject("is_card_updated");
 
 let sliders_mapping = ref([
   {
@@ -87,18 +89,6 @@ function start_detection() {
   }
 }
 
-function get_all_cards() {
-  const url = new URL(`${curr_api}/card/get_all`)
-  // url.searchParams.set('limit', '5')
-
-  fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        user_cards.value = data
-        // console.log('cards', data);
-      })
-}
-
 function poll_cards() {
 
   const url = new URL(`${curr_api}/database/check_for_changes`)
@@ -107,7 +97,7 @@ function poll_cards() {
       .then(data => {
 
         if (data) {
-          get_all_cards()
+          is_card_updated.value = true
         }
 
       })
@@ -118,7 +108,6 @@ function poll_cards() {
 
 onMounted(() => {
   get_slider_settings()
-  get_all_cards()
 })
 
 onUnmounted(() => {
@@ -152,11 +141,10 @@ onUnmounted(() => {
 
     </div>
 
-    <div class="cards">
-      <div v-for="card in user_cards" :key="card.id">
-        <card-master-component :card="card"></card-master-component>
-      </div>
+    <div class="card_list">
+      <card-list></card-list>
     </div>
+
   </div>
 
 </template>
@@ -170,14 +158,9 @@ onUnmounted(() => {
   height: 95vh;
 }
 
-.cards {
-  display: flex;
-  flex-flow: row wrap;
-  outline: 1px solid red;
-  align-items: flex-start;
+.card_list {
   margin: auto;
-  height: 100%;
-  width: 60%;
+  width: 80%;
 }
 
 .webcams {

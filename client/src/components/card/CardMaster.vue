@@ -21,15 +21,11 @@ const card_height = computed(() => String(card_size[1]) + 'px')
   <edit-buttons :card="card" v-if="edit_mode"></edit-buttons>
 
   <div class="card">
-
     <card-image :card="card"></card-image>
     <card-badges :card="card"></card-badges>
-
   </div>
-  <p>{{ card['id'] }}</p>
 
   <card-footer :card="card"></card-footer>
-
 
 </template>
 

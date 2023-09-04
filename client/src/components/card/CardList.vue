@@ -5,18 +5,17 @@ import CardMaster from "./CardMaster.vue";
 let props = defineProps(["test"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
+const is_card_updated = inject("is_card_updated");
 const card_width = computed(() => String(card_size[0]) + 'px')
 let user_cards = ref([])
 
-let is_card_updated = ref(false)
-provide('is_card_updated', is_card_updated)
 
 function get_all_cards() {
   fetch(new URL(`${curr_api}/card/get_all`))
       .then(response => response.json())
       .then(data => {
 
-        // data.sort((a, b) => a.type > b.type)
+        data.sort((a, b) => a['user_card_id'] > b['user_card_id'])
         user_cards.value = data
         console.log('cards', data);
       })

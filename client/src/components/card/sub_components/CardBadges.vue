@@ -10,8 +10,9 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 </script>
 
 <template>
-  <div class="card_amount badge"> {{ card['amount'] }} </div>
-  <div class="card_rarity badge" v-if="card['rarity_code']!=='(C)'"> {{ card['rarity_code'].replace('(','').replace(')','') }} </div>
+  <div class="wrapper" v-if="card['card_id']!==null">
+    <div class="badge" v-if="card['amount']>1"> {{ card['amount'] }}</div>
+  </div>
 </template>
 
 <style scoped>
@@ -19,23 +20,20 @@ const card_height = computed(() => String(card_size[1]) + 'px')
   width: v-bind(card_width);
   height: v-bind(card_height);
 }
-.card_amount {
+.wrapper {
+  display: flex;
+  flex-flow: column nowrap;
   position: absolute;
-  width: 30px;
-  height: 30px;
   right: -10px;
   top: -10px;
-}
-.card_rarity {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  right: -10px;
-  top: 30px;
+  gap: 5px;
 }
 .badge {
+  width: 25px;
+  height: 25px;
+
   color: white;
-  font-size: 1.1em;
+  font-size: 1em;
   font-weight: bold;
 
   border-radius: 50%;
