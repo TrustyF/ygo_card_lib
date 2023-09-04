@@ -2,8 +2,11 @@
 import {inject, onMounted, watch, ref, computed} from "vue";
 
 let props = defineProps(["card"]);
+
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
+const is_card_updated = inject("is_card_updated");
+
 const card_width = computed(() => String(card_size[0]) + 'px')
 const card_height = computed(() => String(card_size[1]) + 'px')
 
@@ -11,6 +14,9 @@ function delete_card(card_id) {
   const url = new URL(`${curr_api}/card/delete`)
   url.searchParams.set('id', String(card_id))
   fetch(url)
+      .then(() => {
+        is_card_updated.value = true
+      })
 }
 
 function set_card_code(card_code, card_id) {
@@ -18,6 +24,9 @@ function set_card_code(card_code, card_id) {
   url.searchParams.set('id', String(card_id))
   url.searchParams.set('code', String(card_code))
   fetch(url)
+      .then(() => {
+        is_card_updated.value = true
+      })
 }
 </script>
 
@@ -38,6 +47,9 @@ function set_card_code(card_code, card_id) {
   width: v-bind(card_width);
   height: v-bind(card_height);
   position: absolute;
-  outline: 1px solid red;
+  /*outline: 1px solid red;*/
+  z-index: 10;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 </style>

@@ -26,15 +26,14 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 
 <style scoped>
 .footer {
-  position: absolute;
   width: v-bind(card_width);
-  margin-top: v-bind(card_height);
+  /*padding-top: v-bind(card_height);*/
   height: 50px;
-  outline: 1px solid red;
+  /*outline: 1px solid red;*/
 }
 
 #code_and_price {
-  outline: 1px solid greenyellow;
+  /*outline: 1px solid greenyellow;*/
 
   display: flex;
   flex-flow: row nowrap;
@@ -42,7 +41,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 }
 
 h1 {
-  font-size: 1.1em;
+  font-size: 1em;
 
   white-space: nowrap;
   overflow: hidden;

@@ -7,7 +7,7 @@ import router from './router'
 const local_api = "http://localhost:5000";
 const server_api = "https://ttt-trustyfox.pythonanywhere.com";
 const dev_mode = import.meta.env.DEV;
-const edit_mode = false
+const edit_mode = true
 
 
 const app = createApp(App)

@@ -11,7 +11,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 
 <template>
   <div class="card_amount badge"> {{ card['amount'] }} </div>
-  <div class="card_rarity badge"> {{ card['rarity_code'] }} </div>
+  <div class="card_rarity badge" v-if="card['rarity_code']!=='(C)'"> {{ card['rarity_code'].replace('(','').replace(')','') }} </div>
 </template>
 
 <style scoped>
@@ -36,6 +36,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 .badge {
   color: white;
   font-size: 1.1em;
+  font-weight: bold;
 
   border-radius: 50%;
 
@@ -43,8 +44,8 @@ const card_height = computed(() => String(card_size[1]) + 'px')
   justify-content: center;
   align-items: center;
 
-  background-color: royalblue;
-  box-shadow: inset 1px 1px white;
-  filter: drop-shadow(1px 1px 1px black);
+  background-color: darkcyan;
+  /*box-shadow: inset 1px 1px white;*/
+  filter: drop-shadow(2px 2px 2px black);
 }
 </style>
