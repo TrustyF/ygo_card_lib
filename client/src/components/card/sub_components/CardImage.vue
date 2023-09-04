@@ -15,6 +15,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 
 <style scoped>
 .card_image {
+  position: absolute;
   width: v-bind(card_width);
   height: v-bind(card_height);
 }
