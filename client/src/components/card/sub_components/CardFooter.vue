@@ -17,16 +17,16 @@ const card_width = computed(() => String(card_size[0]) + 'px')
 
     <div id="code_and_rarity">
       <h2>{{ card['code'] }}</h2>
-      <h2> - </h2>
-      <h2>{{ card['rarity'] }}</h2>
+      <h2 v-if="card['rarity'] !== 'Common'">{{ `${card['rarity']}` }}</h2>
+      <h2 v-if="card['language']">{{ `- ${card['language']}` }}</h2>
     </div>
 
     <div id="price_and_storage">
       <h3 v-if="card['sell_price']">{{ card['sell_price'] + "$" }}</h3>
       <h3 v-else>{{ card['price'] + "$" }}</h3>
 
-<!--      <h3>{{ card['storage_name'].replace(/_/g, ' ') }}</h3>-->
-      <img :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" alt="storage_image" class="storage_image">
+      <!--      <h3>{{ card['storage_name'].replace(/_/g, ' ') }}</h3>-->
+      <img :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" class="storage_image">
     </div>
 
   </div>
@@ -45,11 +45,13 @@ const card_width = computed(() => String(card_size[0]) + 'px')
   flex-flow: row nowrap;
   gap: 10px;
 }
-#price_and_storage{
+
+#price_and_storage {
   display: flex;
   flex-flow: row nowrap;
   gap: 10px;
 }
+
 .storage_image {
   position: absolute;
   right: 0;

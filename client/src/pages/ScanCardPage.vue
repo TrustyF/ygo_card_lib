@@ -86,24 +86,13 @@ function start_detection() {
     poll_cards()
   } else {
     clearTimeout(polling_cards.value)
+    polling_cards.value = undefined
   }
 }
 
 function poll_cards() {
-
-  const url = new URL(`${curr_api}/database/check_for_changes`)
-  fetch(url)
-      .then(response => response.json())
-      .then(data => {
-
-        if (data) {
-          is_card_updated.value = true
-        }
-
-      })
-
-
-  polling_cards.value = setTimeout(poll_cards, 500)
+  is_card_updated.value = true
+  polling_cards.value = setTimeout(poll_cards, 1000)
 }
 
 onMounted(() => {
@@ -142,7 +131,7 @@ onUnmounted(() => {
     </div>
 
     <div class="card_list">
-      <card-list></card-list>
+      <card-list card_limit="5"></card-list>
     </div>
 
   </div>
