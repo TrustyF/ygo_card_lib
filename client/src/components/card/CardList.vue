@@ -12,18 +12,15 @@ let user_cards = ref([])
 function group_same_cards(array) {
   let out = []
   array.forEach((card) => {
-    let result = array.filter((value) => value['card_id'] === card['card_id'] && value['storage_id'] === card['storage_id'])
-    let existing = out.filter((value) => value['card_id'] === card['card_id'] && value['storage_id'] === card['storage_id'])
+    let result = array.filter((value) => value['card_id'] === card['card_id'] && value['storage_id'] === card['storage_id'] && value['language'] === card['language'])
+    let existing = out.filter((value) => value['card_id'] === card['card_id'] && value['storage_id'] === card['storage_id'] && value['language'] === card['language'])
 
     if (result.length > 1 && existing.length === 0) {
       card['amount'] = result.length
       out.push(card)
-    }
-
-    if (result.length === 1){
+    } else if (result.length === 1) {
       out.push(card)
     }
-
   })
   return out
 }
@@ -38,9 +35,10 @@ function get_all_cards() {
   fetch(url)
       .then(response => response.json())
       .then(data => {
-        data.sort((a, b) => a['card_id'] < b['card_id'])
+        data.sort((a, b) => a['user_card_id'] < b['user_card_id'])
 
-        user_cards.value = group_same_cards(data)
+        // user_cards.value = group_same_cards(data)
+        user_cards.value = data
         console.log('cards', data);
       })
 }
@@ -67,7 +65,6 @@ watch(is_card_updated, () => {
 
 <style scoped>
 .card_list {
-  /*outline: 1px solid red;*/
   width: 100%;
 
   display: grid;

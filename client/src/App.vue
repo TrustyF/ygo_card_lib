@@ -5,11 +5,13 @@ import {ref, provide, computed, inject, onMounted} from "vue";
 const curr_api = inject("curr_api");
 
 let is_card_updated = ref(false)
+let is_card_editing = ref(false)
 const card_storages = ref([])
 
 provide("card_size", [168, 246]);
 provide('is_card_updated', is_card_updated)
 provide('card_storages', card_storages)
+provide('is_card_editing', is_card_editing)
 
 function load_card_storages() {
   const url = new URL(`${curr_api}/storage/get_all`)
@@ -36,6 +38,7 @@ onMounted(() => {
       <RouterLink to="/scan_card">Card scan</RouterLink>
     </nav>
   </header>
+  <button @click="is_card_editing=!is_card_editing">edit cards</button>
   <RouterView/>
 
 </template>

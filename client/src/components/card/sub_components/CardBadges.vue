@@ -11,7 +11,9 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 
 <template>
   <div class="wrapper" v-if="card['card_id']!==null">
-    <div class="badge" v-if="card['amount']>1"> {{ card['amount'] }}</div>
+    <div class="badge cyan" v-if="card['amount']>1"> {{ card['amount'] }}</div>
+    <div class="badge purple" v-if="card['rarity_code']!=='(C)'"> {{ card['rarity_code'].replace('(','').replace(')','') }}</div>
+    <div class="badge green" v-if="card['language']!==null"> {{ card['language'].slice(0,2) }}</div>
   </div>
 </template>
 
@@ -33,17 +35,32 @@ const card_height = computed(() => String(card_size[1]) + 'px')
   height: 25px;
 
   color: white;
-  font-size: 1em;
+  font-family: Carlito,sans-serif;
+  font-size: 1.2em;
   font-weight: bold;
-
-  border-radius: 50%;
+  text-shadow: 1px 1px 2px black , 0 0 3px black;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
+  filter: drop-shadow(2px 2px 3px black);
+}
+.cyan {
   background-color: darkcyan;
-  /*box-shadow: inset 1px 1px white;*/
-  filter: drop-shadow(2px 2px 2px black);
+  box-shadow: inset 1px 1px 2px #0fdcde,inset -2px -2px 2px #004748;
+  border-radius: 30%;
+
+}
+.purple {
+  background-color: #b20081;
+  box-shadow: inset 1px 1px 2px #e329ac,inset -2px -2px 2px #620043;
+  border-radius: 50%;
+
+}
+.green {
+  background-color: #18b100;
+  box-shadow: inset 1px 1px 2px #41e526,inset -2px -2px 2px #126e00;
+  border-radius: 50%;
 }
 </style>
