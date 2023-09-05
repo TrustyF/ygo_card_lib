@@ -6,6 +6,7 @@ let props = defineProps(["card"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
+const card_storages = inject("card_storages");
 
 const card_width = computed(() => String(card_size[0]) + 'px')
 const card_height = computed(() => String(card_size[1]) + 'px')
@@ -31,6 +32,18 @@ function set_card_code(user_card_id, card_id) {
   toggle_option(`set_list${user_card_id}`)
 }
 
+function set_card_storage(user_card_id, storage_id) {
+  const url = new URL(`${curr_api}/card/set_card_storage`)
+  url.searchParams.set('user_card_id', String(user_card_id))
+  url.searchParams.set('storage_id', String(storage_id))
+  fetch(url)
+      .then(() => {
+        is_card_updated.value = true
+      })
+
+  toggle_option(`storage_list${user_card_id}`)
+}
+
 function toggle_option(option) {
   let target = document.getElementById(option)
 
@@ -44,35 +57,73 @@ function toggle_option(option) {
 
 <template>
   <div class="buttons_wrapper">
-    <button @click="delete_card(card.id)">x</button>
 
-    <button @click="toggle_option(`set_list${card['user_card_id']}`)">Set</button>
-    <div :id="`set_list${card['user_card_id']}`" class="collapsable">
-      <div class="set_button" v-for="set in card['sets']" :key="set['card_code']">
-        <button @click="set_card_code(card['user_card_id'],set['card_id'])">
-          {{ `${set['card_code']} ${set['card_rarity'] !== 'Common' ? " - " + set['card_rarity'] : ''}` }}
-        </button>
-      </div>
+    <div>
+      <button class="main_list_button" @click="delete_card(card.id)">x</button>
     </div>
 
-    <!--    <div class="set_list" v-if="card['storage_id']===null">-->
-    <!--      <div class="set_button" v-for="set in card['sets']" :key="set['card_code']">-->
-    <!--        <button @click="set_card_code(set['card_code'],card.id)">{{ `${set['card_code']} ${set['card_rarity']!=='Common' ? " - " + set['card_rarity'] : ''}` }}</button>-->
-    <!--      </div>-->
-    <!--    </div>-->
+    <div>
+      <button class="main_list_button" @click="toggle_option(`set_list${card['user_card_id']}`)">Set</button>
+
+      <div class="category">
+        <div :id="`set_list${card['user_card_id']}`" class="collapsable">
+          <div class="set_button" v-for="set in card['sets']" :key="set['card_code']">
+            <button @click="set_card_code(card['user_card_id'],set['card_id'])">
+              {{ `${set['card_code']} ${set['card_rarity'] !== 'Common' ? " - " + set['card_rarity'] : ''}` }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+      <button class="main_list_button" @click="toggle_option(`storage_list${card['user_card_id']}`)">Storage</button>
+
+      <div class="category">
+        <div :id="`storage_list${card['user_card_id']}`" class="collapsable">
+          <div class="storage_button" v-for="storage in card_storages" :key="storage['id']">
+            <button @click="set_card_storage(card['user_card_id'],storage['id'])">
+              {{ storage['name'].replace(/_/g, ' ') }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
 
   </div>
 </template>
 
 <style scoped>
 .buttons_wrapper {
-  width: v-bind(card_width);
-  max-height: v-bind(card_height);
+  /*max-width: v-bind(card_width);*/
+  /*max-height: v-bind(card_height);*/
+  top: -2px;
   position: absolute;
   display: flex;
   flex-flow: row wrap;
+  gap: 5px;
   /*outline: 1px solid red;*/
   z-index: 10;
+
+}
+
+.main_list_button {
+  background-color: #054a65;
+  outline: none;
+  border-style: none;
+  border-radius: 5px;
+  box-shadow: inset 1px 1px 1px #1fb1a2;
+  color: white;
+  padding: 3px 7px 3px 7px;
+}
+
+.category {
+  /*outline: 1px solid greenyellow;*/
+  position: absolute;
+  white-space: nowrap;
+  left: 0;
   overflow-y: scroll;
   scrollbar-width: none;
 }
@@ -80,10 +131,15 @@ function toggle_option(option) {
 .collapsable {
   visibility: hidden;
   opacity: 0;
+  height: 0;
+  width: 0;
 }
 
 .open {
   visibility: visible;
   opacity: 1;
+  height: auto;
+  width: auto;
+
 }
 </style>

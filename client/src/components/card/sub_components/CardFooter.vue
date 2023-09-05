@@ -4,6 +4,8 @@ import {inject, onMounted, watch, ref, computed} from "vue";
 let props = defineProps(["card"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
+const card_storages = inject("card_storages");
+
 const card_width = computed(() => String(card_size[0]) + 'px')
 
 </script>
@@ -13,14 +15,19 @@ const card_width = computed(() => String(card_size[0]) + 'px')
     <h1>{{ card['name'] }}</h1>
 
 
-    <div id="code_and_price">
+    <div id="code_and_rarity">
       <h2>{{ card['code'] }}</h2>
       <h2> - </h2>
       <h2>{{ card['rarity'] }}</h2>
     </div>
 
-    <h3 v-if="card['sell_price']">{{ card['sell_price'] + "$" }}</h3>
-    <h3 v-else>{{ card['price'] + "$" }}</h3>
+    <div id="price_and_storage">
+      <h3 v-if="card['sell_price']">{{ card['sell_price'] + "$" }}</h3>
+      <h3 v-else>{{ card['price'] + "$" }}</h3>
+
+<!--      <h3>{{ card['storage_name'].replace(/_/g, ' ') }}</h3>-->
+      <img :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" alt="storage_image" class="storage_image">
+    </div>
 
   </div>
 </template>
@@ -33,12 +40,23 @@ const card_width = computed(() => String(card_size[0]) + 'px')
   /*outline: 1px solid red;*/
 }
 
-#code_and_price {
-  /*outline: 1px solid greenyellow;*/
-
+#code_and_rarity {
   display: flex;
   flex-flow: row nowrap;
   gap: 10px;
+}
+#price_and_storage{
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+}
+.storage_image {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  /*width: 30px;*/
+  height: 30px;
+  /*opacity: 50%;*/
 }
 
 h1 {
