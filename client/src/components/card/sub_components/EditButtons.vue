@@ -84,7 +84,12 @@ function toggle_option(option) {
              :class="card['card_id']===null ? 'collapsable open': 'collapsable'">
           <div class="set_button" v-for="set in card['sets']" :key="set['card_code']+card['user_card_id']">
             <button @click="set_card_code(card['user_card_id'],set['card_id'])">
-              {{ `${set['card_code']} ${set['card_rarity'] !== 'Common' ? " - " + set['card_rarity'] : ''}` }}
+              {{ `${set['card_code']}` }}
+            </button>
+            <button v-if="set['card_edition']!=='Unlimited' || set['card_rarity']!=='Common'">
+              {{
+                `${set['card_rarity'] !== 'Common' ? set['card_rarity'] : ''} ${ set['card_edition'] }`
+              }}
             </button>
           </div>
         </div>
@@ -157,8 +162,7 @@ function toggle_option(option) {
   left: 0;
   overflow-y: scroll;
   scrollbar-width: none;
-
-  max-height: 220px;
+  max-height: 300px;
 }
 
 .collapsable {

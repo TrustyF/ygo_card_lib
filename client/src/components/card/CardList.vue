@@ -12,6 +12,12 @@ let user_cards = ref([])
 function group_same_cards(array) {
   let out = []
   array.forEach((card) => {
+
+    if (card['card_id'] === null) {
+      out.push(card)
+      return
+    }
+
     let result = array.filter((value) => value['card_id'] === card['card_id'] && value['storage_id'] === card['storage_id'] && value['language'] === card['language'])
     let existing = out.filter((value) => value['card_id'] === card['card_id'] && value['storage_id'] === card['storage_id'] && value['language'] === card['language'])
 
@@ -35,10 +41,10 @@ function get_all_cards() {
   fetch(url)
       .then(response => response.json())
       .then(data => {
-        data.sort((a, b) => a['user_card_id'] < b['user_card_id'])
+        // data.sort((a, b) => a['price'] < b['price'])
 
-        // user_cards.value = group_same_cards(data)
-        user_cards.value = data
+        user_cards.value = group_same_cards(data)
+        // user_cards.value = data
         console.log('cards', data);
       })
 }
@@ -54,13 +60,11 @@ watch(is_card_updated, () => {
 </script>
 
 <template>
-
   <div class="card_list">
     <div v-for="card in user_cards" :key="card['user_card_id']">
       <CardMaster :card="card"></CardMaster>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -72,4 +76,5 @@ watch(is_card_updated, () => {
   gap: 10px;
   justify-items: center;
 }
+
 </style>

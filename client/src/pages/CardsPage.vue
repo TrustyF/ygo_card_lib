@@ -9,7 +9,7 @@ const curr_api = inject("curr_api");
 
 <template>
   <div class="card_list">
-    <card-list></card-list>
+    <card-list card_limit="100"></card-list>
   </div>
 </template>
 

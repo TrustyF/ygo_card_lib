@@ -6,6 +6,8 @@ import CardList from "../components/card/CardList.vue";
 // let props = defineProps(["test"]);
 const curr_api = inject("curr_api");
 const is_card_updated = inject("is_card_updated");
+const is_card_editing = inject("is_card_editing");
+
 
 let sliders_mapping = ref([
   {
@@ -38,6 +40,7 @@ let sliders_mapping = ref([
   },
 ])
 let user_cards = ref([])
+let is_webcam = ref(false)
 let is_detecting = ref(false)
 let polling_cards = ref(undefined)
 
@@ -76,7 +79,10 @@ function set_slider_settings(slider) {
 
 function start_detection() {
   is_detecting.value = !is_detecting.value
-  fetch(new URL(`${curr_api}/card_detector/start_detection`))
+
+  const url = new URL(`${curr_api}/card_detector/start_detection`)
+  url.searchParams.set('state', String(is_detecting.value))
+  fetch(url)
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -95,11 +101,24 @@ function poll_cards() {
   polling_cards.value = setTimeout(poll_cards, 1000)
 }
 
+function toggle_webcam_feed(state) {
+  const url = new URL(`${curr_api}/card_detector/toggle_feed`)
+  url.searchParams.set('state', state)
+  fetch(url)
+      .then(() => {
+        is_webcam.value = state
+        console.log(is_webcam.value)
+      })
+}
+
 onMounted(() => {
   get_slider_settings()
+  toggle_webcam_feed(true)
+  is_card_editing.value = true
 })
 
 onUnmounted(() => {
+  toggle_webcam_feed(false)
 })
 
 </script>
@@ -108,8 +127,9 @@ onUnmounted(() => {
   <div class="wrapper">
     <div class="webcams">
       <div>
-        <img style="height: 400px" :src="`${curr_api}/card_detector/get_webcam_feed`" alt="feed">
-        <img style="height: 400px" :src="`${curr_api}/card_detector/get_filter_feed`" alt="filter_feed">
+        <img style="height: 400px" v-if="is_webcam" :src="`${curr_api}/card_detector/get_webcam_feed?cache=${new Date()}`" alt="feed">
+        <img style="height: 400px" v-if="is_webcam" :src="`${curr_api}/card_detector/get_filter_feed?cache=${new Date()}`"
+             alt="filter_feed">
       </div>
 
       <div class="settings_sliders">
@@ -131,7 +151,7 @@ onUnmounted(() => {
     </div>
 
     <div class="card_list">
-      <card-list card_limit="5"></card-list>
+      <card-list card_limit="10"></card-list>
     </div>
 
   </div>

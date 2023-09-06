@@ -12,8 +12,12 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 <template>
   <div class="wrapper" v-if="card['card_id']!==null">
     <div class="badge cyan" v-if="card['amount']>1"> {{ card['amount'] }}</div>
-    <div class="badge purple" v-if="card['rarity_code']!=='(C)'"> {{ card['rarity_code'].replace('(','').replace(')','') }}</div>
+    <div class="badge purple" v-if="card['rarity_code']!=='(C)'"> {{ card['rarity_code'].replace('(','').replace(')','').replace('/(f)/','') }}</div>
     <div class="badge green" v-if="card['language']!==null"> {{ card['language'].slice(0,2) }}</div>
+    <div class="badge red" v-if="card['is_staple']!==false">!</div>
+<!--    <div class="badge red" v-if="card['ban_tcg']!==null">{{ card['ban_tcg']==='Limited' ? 1 : card['ban_tcg']==='Semi-Limited' ? 2 : card['ban_tcg']==='Banned' ? '⊘' : ""}}</div>-->
+    <div class="badge red" v-if="card['ban_tcg']!==null">{{ card['ban_tcg'] }}</div>
+<!--    <div class="badge red" v-if="card['archetype']!==null">{{ card['archetype'] }}</div>-->
   </div>
 </template>
 
@@ -49,7 +53,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 .cyan {
   background-color: darkcyan;
   box-shadow: inset 1px 1px 2px #0fdcde,inset -2px -2px 2px #004748;
-  border-radius: 30%;
+  border-radius: 50%;
 
 }
 .purple {
@@ -61,6 +65,11 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 .green {
   background-color: #18b100;
   box-shadow: inset 1px 1px 2px #41e526,inset -2px -2px 2px #126e00;
+  border-radius: 50%;
+}
+.red {
+  background-color: #b10000;
+  box-shadow: inset 1px 1px 2px #e81d1e,inset -2px -2px 2px #6b0001;
   border-radius: 50%;
 }
 </style>
