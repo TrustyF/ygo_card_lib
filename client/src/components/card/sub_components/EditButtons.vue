@@ -11,6 +11,7 @@ const card_storages = inject("card_storages");
 const card_width = computed(() => String(card_size[0]) + 'px')
 const card_height = computed(() => String(card_size[1]) + 'px')
 const card_languages = ["French", "null"]
+const card_damages = ["Light played", "Played", "Poor", "Damaged", "null"]
 
 function delete_card(card_id) {
   const url = new URL(`${curr_api}/card/delete`)
@@ -21,40 +22,18 @@ function delete_card(card_id) {
       })
 }
 
-function set_card_code(user_card_id, card_id) {
-  const url = new URL(`${curr_api}/card/set_card_code`)
+function set_card_attribute(user_card_id, attr_name, attribute) {
+  const url = new URL(`${curr_api}/card/set_card_attrib`)
   url.searchParams.set('user_card_id', String(user_card_id))
-  url.searchParams.set('card_id', String(card_id))
+  url.searchParams.set('attr_name', String(attr_name))
+  url.searchParams.set('attribute', attribute)
+
   fetch(url)
       .then(() => {
         is_card_updated.value = true
       })
 
-  toggle_option(`set_list${user_card_id}`)
-}
-
-function set_card_storage(user_card_id, storage_id) {
-  const url = new URL(`${curr_api}/card/set_card_storage`)
-  url.searchParams.set('user_card_id', String(user_card_id))
-  url.searchParams.set('storage_id', String(storage_id))
-  fetch(url)
-      .then(() => {
-        is_card_updated.value = true
-      })
-
-  toggle_option(`storage_list${user_card_id}`)
-}
-
-function set_card_language(user_card_id, language) {
-  const url = new URL(`${curr_api}/card/set_card_language`)
-  url.searchParams.set('user_card_id', String(user_card_id))
-  url.searchParams.set('language', String(language))
-  fetch(url)
-      .then(() => {
-        is_card_updated.value = true
-      })
-
-  toggle_option(`language_list${user_card_id}`)
+  toggle_option(`${attr_name}_list${user_card_id}`)
 }
 
 function toggle_option(option) {
@@ -77,54 +56,61 @@ function toggle_option(option) {
     </div>
 
     <div>
-      <button class="main_list_button" @click="toggle_option(`set_list${card['user_card_id']}`)">Set</button>
-
+      <button class="main_list_button" @click="toggle_option(`card_id_list${card['user_card_id']}`)">Set</button>
       <div class="category">
-        <div :id="`set_list${card['user_card_id']}`"
+        <div :id="`card_id_list${card['user_card_id']}`"
              :class="card['card_id']===null ? 'collapsable open': 'collapsable'">
           <div class="set_button" v-for="set in card['sets']" :key="set['card_code']+card['user_card_id']">
-            <button @click="set_card_code(card['user_card_id'],set['card_id'])">
+            <button @click="set_card_attribute(card['user_card_id'],'card_id',set['card_id'])">
               {{ `${set['card_code']}` }}
             </button>
             <button v-if="set['card_edition']!=='Unlimited' || set['card_rarity']!=='Common'">
               {{
-                `${set['card_rarity'] !== 'Common' ? set['card_rarity'] : ''} ${ set['card_edition'] }`
+                `${set['card_rarity'] !== 'Common' ? set['card_rarity'] : ''} ${set['card_edition']}`
               }}
             </button>
           </div>
         </div>
       </div>
-
     </div>
 
     <div>
-      <button class="main_list_button" @click="toggle_option(`storage_list${card['user_card_id']}`)">Storage</button>
-
+      <button class="main_list_button" @click="toggle_option(`storage_id_list${card['user_card_id']}`)">Storage</button>
       <div class="category">
-        <div :id="`storage_list${card['user_card_id']}`" class="collapsable">
+        <div :id="`storage_id_list${card['user_card_id']}`" class="collapsable">
           <div class="storage_button" v-for="storage in card_storages" :key="storage['id']+card['user_card_id']">
-            <button @click="set_card_storage(card['user_card_id'],storage['id'])">
+            <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])">
               {{ storage['name'].replace(/_/g, ' ') }}
             </button>
           </div>
         </div>
       </div>
-
     </div>
 
     <div>
-      <button class="main_list_button" @click="toggle_option(`language_list${card['user_card_id']}`)">Language</button>
-
+      <button class="main_list_button" @click="toggle_option(`card_language_list${card['user_card_id']}`)">Language</button>
       <div class="category">
-        <div :id="`language_list${card['user_card_id']}`" class="collapsable">
+        <div :id="`card_language_list${card['user_card_id']}`" class="collapsable">
           <div class="language_button" v-for="lang in card_languages" :key="lang+card['user_card_id']">
-            <button @click="set_card_language(card['user_card_id'],lang)">
+            <button @click="set_card_attribute(card['user_card_id'],'card_language',lang)">
               {{ lang }}
             </button>
           </div>
         </div>
       </div>
+    </div>
 
+    <div>
+      <button class="main_list_button" @click="toggle_option(`card_damage_list${card['user_card_id']}`)">Damage</button>
+      <div class="category">
+        <div :id="`card_damage_list${card['user_card_id']}`" class="collapsable">
+          <div class="damage_button" v-for="damage in card_damages" :key="damage+card['user_card_id']">
+            <button @click="set_card_attribute(card['user_card_id'],'card_damage',damage)">
+              {{ damage }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>

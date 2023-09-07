@@ -17,6 +17,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
     <div class="badge red" v-if="card['is_staple']!==false">!</div>
 <!--    <div class="badge red" v-if="card['ban_tcg']!==null">{{ card['ban_tcg']==='Limited' ? 1 : card['ban_tcg']==='Semi-Limited' ? 2 : card['ban_tcg']==='Banned' ? '⊘' : ""}}</div>-->
     <div class="badge red" v-if="card['ban_tcg']!==null">{{ card['ban_tcg'] }}</div>
+    <div class="badge red" v-if="card['card_damage']!==null">{{ card['card_damage'] }}</div>
 <!--    <div class="badge red" v-if="card['archetype']!==null">{{ card['archetype'] }}</div>-->
   </div>
 </template>

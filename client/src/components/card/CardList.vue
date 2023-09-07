@@ -18,8 +18,18 @@ function group_same_cards(array) {
       return
     }
 
-    let result = array.filter((value) => value['card_id'] === card['card_id'] && value['storage_id'] === card['storage_id'] && value['language'] === card['language'])
-    let existing = out.filter((value) => value['card_id'] === card['card_id'] && value['storage_id'] === card['storage_id'] && value['language'] === card['language'])
+    let result = array.filter((value) =>
+        value['card_id'] === card['card_id'] &&
+        value['storage_id'] === card['storage_id'] &&
+        value['language'] === card['language'] &&
+        value['card_damage'] === card['card_damage']
+    )
+    let existing = out.filter((value) =>
+        value['card_id'] === card['card_id'] &&
+        value['storage_id'] === card['storage_id'] &&
+        value['language'] === card['language'] &&
+        value['card_damage'] === card['card_damage']
+    )
 
     if (result.length > 1 && existing.length === 0) {
       card['amount'] = result.length

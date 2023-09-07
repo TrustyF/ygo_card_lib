@@ -1,6 +1,7 @@
 <script setup>
 import {RouterLink, RouterView} from 'vue-router'
 import {ref, provide, computed, inject, onMounted} from "vue";
+import EditTools from "./components/editing/EditTools.vue";
 
 const curr_api = inject("curr_api");
 
@@ -38,7 +39,7 @@ onMounted(() => {
       <RouterLink to="/scan_card">Card scan</RouterLink>
     </nav>
   </header>
-  <button @click="is_card_editing=!is_card_editing">edit cards</button>
+  <edit-tools></edit-tools>
   <RouterView/>
 
 </template>
