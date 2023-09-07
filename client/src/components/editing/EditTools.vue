@@ -31,8 +31,9 @@ function add_search(input) {
 <style scoped>
 .wrapper {
   position: fixed;
-  width: 250px;
+  /*width: 70px;*/
   display: flex;
   flex-flow: column wrap;
+  z-index: 50;
 }
 </style>

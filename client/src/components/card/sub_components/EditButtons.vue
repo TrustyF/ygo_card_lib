@@ -79,8 +79,9 @@ function toggle_option(option) {
       <div class="category">
         <div :id="`storage_id_list${card['user_card_id']}`" class="collapsable">
           <div class="storage_button" v-for="storage in card_storages" :key="storage['id']+card['user_card_id']">
-            <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])">
+            <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;align-items: center;">
               {{ storage['name'].replace(/_/g, ' ') }}
+              <img :src="`${curr_api}/storage/get_image?id=${storage['id']}`" style="height: 25px;margin-left: 10px">
             </button>
           </div>
         </div>
@@ -148,7 +149,7 @@ function toggle_option(option) {
   left: 0;
   overflow-y: scroll;
   scrollbar-width: none;
-  max-height: 300px;
+  max-height: 250px;
 }
 
 .collapsable {
@@ -156,6 +157,10 @@ function toggle_option(option) {
   opacity: 0;
   height: 0;
   width: 0;
+
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 2px;
 }
 
 .open {

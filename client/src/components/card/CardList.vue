@@ -8,6 +8,7 @@ const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
 const card_width = computed(() => String(card_size[0]) + 'px')
 let user_cards = ref([])
+let page = ref(0)
 
 function group_same_cards(array) {
   let out = []
@@ -47,6 +48,8 @@ function get_all_cards() {
   if (props['card_limit'] !== undefined) {
     url.searchParams.set('card_limit', String(props['card_limit']))
   }
+  url.searchParams.set('page', String(page.value))
+
 
   fetch(url)
       .then(response => response.json())
@@ -57,6 +60,27 @@ function get_all_cards() {
         // user_cards.value = data
         console.log('cards', data);
       })
+}
+
+function change_page(val) {
+
+  page.value = Math.min(Math.max(page.value + val,0),200)
+
+
+  get_all_cards()
+  window.scrollTo(0, 0);
+}
+
+function search_card(input){
+  let text = input.target.value
+  const url = new URL(`${curr_api}/card/search_by_name`)
+  url.searchParams.set('name',text)
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      user_cards.value = data
+      console.log(data);
+    })
 }
 
 onMounted(() => {
@@ -70,21 +94,49 @@ watch(is_card_updated, () => {
 </script>
 
 <template>
-  <div class="card_list">
-    <div v-for="card in user_cards" :key="card['user_card_id']">
-      <CardMaster :card="card"></CardMaster>
+  <div class="wrapper">
+
+    <div class="search_bar_wrapper">
+      <input type="search" @keydown.enter="search_card" @keydown.esc="get_all_cards">
     </div>
+
+    <div class="card_list">
+      <div v-for="card in user_cards" :key="card['user_card_id']">
+        <CardMaster :card="card"></CardMaster>
+      </div>
+    </div>
+
+    <div class="page_nav_wrapper">
+      <button class="page_nav_button" @click="change_page(-100)">{{ '<<' }}</button>
+      <button class="page_nav_button" @click="change_page(-1)">{{ '<' }}</button>
+      <button class="page_nav_button" @click="change_page(1)">{{ '>' }}</button>
+      <button class="page_nav_button" @click="change_page(1)">{{ '>>' }}</button>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
+.wrapper {
+  /*outline: 1px solid red;*/
+}
+
 .card_list {
   width: 100%;
-
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(v-bind(card_width), 1fr));
-  gap: 10px;
+  gap: 20px;
   justify-items: center;
+}
+
+.page_nav_wrapper{
+  display: flex;
+  justify-content: space-between;
+}
+
+.page_nav_button {
+  width: 40px;
+  height: 40px;
 }
 
 </style>

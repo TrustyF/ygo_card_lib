@@ -9,13 +9,13 @@ const curr_api = inject("curr_api");
 
 <template>
   <div class="card_list">
-    <card-list card_limit="100"></card-list>
+    <card-list card_limit="80"></card-list>
   </div>
 </template>
 
 <style scoped>
 .card_list {
-  margin: auto;
-  width: 80%;
+  margin: auto auto 100px auto;
+  width: 75%;
 }
 </style>

@@ -22,6 +22,8 @@ function load_card_storages() {
       .then(data => {
         // console.log(data);
         card_storages.value = data
+        card_storages.value.push({id: 0, 'name': 'null'})
+        console.log(card_storages.value)
       })
 }
 
