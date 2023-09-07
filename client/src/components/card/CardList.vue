@@ -2,13 +2,14 @@
 import {inject, onMounted, watch, ref, computed, provide} from "vue";
 import CardMaster from "./CardMaster.vue";
 
-let props = defineProps(["card_limit"]);
+let props = defineProps(["card_limit", "card_order"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
 const card_width = computed(() => String(card_size[0]) + 'px')
 let user_cards = ref([])
 let page = ref(0)
+let search_text = ref('')
 
 function group_same_cards(array) {
   let out = []
@@ -43,13 +44,16 @@ function group_same_cards(array) {
 }
 
 function get_all_cards() {
+  search_text.value = ''
+
   const url = new URL(`${curr_api}/card/get_all`)
 
   if (props['card_limit'] !== undefined) {
     url.searchParams.set('card_limit', String(props['card_limit']))
   }
-  url.searchParams.set('page', String(page.value))
 
+  url.searchParams.set('page', String(page.value))
+  url.searchParams.set('ordering', String(props['card_order']))
 
   fetch(url)
       .then(response => response.json())
@@ -64,23 +68,22 @@ function get_all_cards() {
 
 function change_page(val) {
 
-  page.value = Math.min(Math.max(page.value + val,0),200)
+  page.value = Math.min(Math.max(page.value + val, 0), 200)
 
 
   get_all_cards()
   window.scrollTo(0, 0);
 }
 
-function search_card(input){
-  let text = input.target.value
+function search_card() {
   const url = new URL(`${curr_api}/card/search_by_name`)
-  url.searchParams.set('name',text)
+  url.searchParams.set('name', search_text.value)
   fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      user_cards.value = data
-      console.log(data);
-    })
+      .then(response => response.json())
+      .then(data => {
+        user_cards.value = data
+        console.log(data);
+      })
 }
 
 onMounted(() => {
@@ -88,7 +91,11 @@ onMounted(() => {
 })
 
 watch(is_card_updated, () => {
-  get_all_cards()
+  if (search_text.value === '') {
+    get_all_cards()
+  } else {
+    search_card(search_text.value)
+  }
   is_card_updated.value = false
 })
 </script>
@@ -97,7 +104,8 @@ watch(is_card_updated, () => {
   <div class="wrapper">
 
     <div class="search_bar_wrapper">
-      <input type="search" @keydown.enter="search_card" @keydown.esc="get_all_cards">
+      <input type="text" v-model="search_text" @keydown.enter="search_card" @keydown.esc="get_all_cards"
+             @focus="$event.target.select()">
     </div>
 
     <div class="card_list">
@@ -129,7 +137,7 @@ watch(is_card_updated, () => {
   justify-items: center;
 }
 
-.page_nav_wrapper{
+.page_nav_wrapper {
   display: flex;
   justify-content: space-between;
 }

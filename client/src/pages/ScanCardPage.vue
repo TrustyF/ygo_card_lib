@@ -151,7 +151,7 @@ onUnmounted(() => {
     </div>
 
     <div class="card_list">
-      <card-list card_limit="10"></card-list>
+      <card-list card_limit="10" card_order="new_first"></card-list>
     </div>
 
   </div>
