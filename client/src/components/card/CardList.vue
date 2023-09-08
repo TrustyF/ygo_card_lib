@@ -67,15 +67,6 @@ function get_all_cards() {
       })
 }
 
-function change_page(val) {
-
-  page.value = Math.min(Math.max(page.value + val, 0), 200)
-
-
-  get_all_cards()
-  window.scrollTo(0, 0);
-}
-
 function search_card() {
   const url = new URL(`${curr_api}/card/search_by_name`)
   url.searchParams.set('name', search_text.value)
@@ -118,25 +109,19 @@ watch(is_card_updated, () => {
       </div>
     </div>
 
-    <div class="page_nav_wrapper">
-      <button class="page_nav_button" @click="change_page(-100)">{{ '<<' }}</button>
-      <button class="page_nav_button" @click="change_page(-1)">{{ '<' }}</button>
-      <button class="page_nav_button" @click="change_page(1)">{{ '>' }}</button>
-      <button class="page_nav_button" @click="change_page(1)">{{ '>>' }}</button>
-    </div>
-
   </div>
 </template>
 
 <style scoped>
 .card_list_wrapper {
+  width: 100%;
   outline: 3px solid red;
   display: flex;
   flex-flow: column wrap;
 }
 
 .card_list {
-  outline: 3px solid green;
+  /*outline: 3px solid green;*/
 
   width: 100%;
   display: grid;

@@ -1,6 +1,7 @@
 <script setup>
 import {RouterLink, RouterView} from 'vue-router'
 import {ref, provide, computed, inject, onMounted} from "vue";
+import NavBarMain from "./components/navbar/NavBarMain.vue";
 
 const curr_api = inject("curr_api");
 
@@ -33,17 +34,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/cards">Cards</RouterLink>
-      <RouterLink to="/scan_card">Card scan</RouterLink>
-    </nav>
-  </header>
-  <RouterView/>
+
+  <div class="main_wrapper">
+    <nav-bar-main></nav-bar-main>
+    <RouterView/>
+  </div>
 
 </template>
 
 <style scoped>
-
+.main_wrapper {
+  outline: 1px solid red;
+  width: 80%;
+  margin: auto;
+}
 </style>

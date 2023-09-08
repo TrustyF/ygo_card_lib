@@ -17,8 +17,6 @@ const card_width = computed(() => String(card_size[0]) + 'px')
 
     <div class="code_and_rarity">
       <h2>{{ card['code'] }}</h2>
-<!--      <h2 v-if="card['rarity'] !== 'Common'">{{ `${card['rarity']}` }}</h2>-->
-<!--      <h2 v-if="card['language']">{{ `- ${card['language']}` }}</h2>-->
       <h3 v-if="card['sell_price']">{{ card['sell_price'] + "$" }}</h3>
       <h3 v-else>{{ card['price'] + "$" }}</h3>
     </div>
