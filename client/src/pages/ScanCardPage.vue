@@ -125,6 +125,7 @@ onUnmounted(() => {
 
 <template>
   <div class="wrapper">
+
     <div class="webcams">
       <div>
         <img style="height: 400px" v-if="is_webcam" :src="`${curr_api}/card_detector/get_webcam_feed?cache=${new Date()}`" alt="feed">
@@ -161,19 +162,23 @@ onUnmounted(() => {
 <style scoped>
 .wrapper {
   display: flex;
-  gap: 20px;
+  /*gap: 20px;*/
   flex-flow: row nowrap;
-  width: 100vw;
+  /*width: 100vw;*/
   height: 95vh;
 }
 
 .card_list {
+  outline: 5px solid purple;
   margin: auto;
-  width: 80%;
+  width: 60%;
 }
 
 .webcams {
-  width: 700px;
+  outline: 5px solid purple;
+
+  width: 35%;
+  margin: auto;
   position: relative;
 }
 

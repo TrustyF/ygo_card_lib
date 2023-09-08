@@ -1,6 +1,7 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed, provide} from "vue";
 import CardMaster from "./CardMaster.vue";
+import EditTools from "../editing/EditTools.vue";
 
 let props = defineProps(["card_limit", "card_order"]);
 const curr_api = inject("curr_api");
@@ -101,10 +102,13 @@ watch(is_card_updated, () => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="card_list_wrapper">
+
+    <edit-tools></edit-tools>
 
     <div class="search_bar_wrapper">
-      <input type="text" v-model="search_text" @keydown.enter="search_card" @keydown.esc="get_all_cards"
+      <label for="search_bar" style="margin-right: 5px">Search card</label>
+      <input type="text" id="search_bar" v-model="search_text" @keydown.enter="search_card" @keydown.esc="get_all_cards"
              @focus="$event.target.select()">
     </div>
 
@@ -125,11 +129,15 @@ watch(is_card_updated, () => {
 </template>
 
 <style scoped>
-.wrapper {
-  /*outline: 1px solid red;*/
+.card_list_wrapper {
+  outline: 3px solid red;
+  display: flex;
+  flex-flow: column wrap;
 }
 
 .card_list {
+  outline: 3px solid green;
+
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(v-bind(card_width), 1fr));

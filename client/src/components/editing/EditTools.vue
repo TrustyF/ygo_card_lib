@@ -22,18 +22,23 @@ function add_search(input) {
   <div class="wrapper">
     <button @click="is_card_editing=!is_card_editing">edit cards</button>
 
-    <label for="add_search">Add search</label>
-    <input type="search" id="add_search" @keydown.enter="add_search">
+
+    <div>
+      <label for="add_search" style="margin-right: 5px">Add search</label>
+      <input type="search" id="add_search" @keydown.enter="add_search">
+    </div>
 
   </div>
 </template>
 
 <style scoped>
 .wrapper {
-  position: fixed;
+  /*position: fixed;*/
   /*width: 70px;*/
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: row wrap;
+  gap: 10px;
   z-index: 50;
+  margin: 10px;
 }
 </style>
