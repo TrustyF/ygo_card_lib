@@ -4,7 +4,7 @@ import {createApp, provide, ref} from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueLazyLoad from 'vue-lazyload'
-import LoadGif from '../public/assets/Card_loading.jpg'
+import LoadGif from '/assets/Card_loading.jpg'
 
 const local_api = "http://localhost:5000";
 const server_api = "https://ttt-trustyfox.pythonanywhere.com";

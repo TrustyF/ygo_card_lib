@@ -37,6 +37,7 @@ onMounted(() => {
 
   <div class="main_wrapper">
     <nav-bar-main></nav-bar-main>
+
     <RouterView/>
   </div>
 

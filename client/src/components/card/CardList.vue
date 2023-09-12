@@ -10,7 +10,14 @@ const is_card_updated = inject("is_card_updated");
 const card_width = computed(() => String(card_size[0]) + 'px')
 let user_cards = ref([])
 let page = ref(0)
+let pageFullLoaded = ref(false)
 let search_text = ref('')
+
+let pageLoading = ref(false)
+
+const debug = computed(() => {
+  return [window.innerHeight, window.scrollY, document.body.offsetHeight]
+})
 
 function group_same_cards(array) {
   let out = []
@@ -49,11 +56,9 @@ function get_all_cards() {
 
   const url = new URL(`${curr_api}/card/get_all`)
 
-  if (props['card_limit'] !== undefined) {
-    url.searchParams.set('card_limit', String(props['card_limit']))
-  }
 
-  url.searchParams.set('page', String(page.value))
+  url.searchParams.set('card_limit', String(props['card_limit']))
+  url.searchParams.set('card_page', String(page.value))
   url.searchParams.set('ordering', String(props['card_order']))
 
   fetch(url)
@@ -73,13 +78,51 @@ function search_card() {
   fetch(url)
       .then(response => response.json())
       .then(data => {
-        user_cards.value = data
+
+        user_cards.value = group_same_cards(data)
         console.log(data);
       })
 }
 
+const handleInfiniteScroll = () => {
+
+  const endOfPage = (window.innerHeight + 200) + window.scrollY >= document.body.offsetHeight;
+
+  if (endOfPage && !pageLoading.value && !pageFullLoaded.value) {
+
+    console.log('loading more...')
+
+    pageLoading.value = true
+    page.value += 1
+
+    const url = new URL(`${curr_api}/card/get_all`)
+    url.searchParams.set('card_page', String(page.value))
+    url.searchParams.set('ordering', String(props['card_order']))
+    url.searchParams.set('card_limit', String(props['card_limit']))
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+
+          if (data.length < 1) {
+            pageFullLoaded.value = true
+          }
+
+          console.log('test', data);
+          user_cards.value = group_same_cards(user_cards.value.concat(data))
+
+          console.log('usercards', user_cards.value)
+
+          pageLoading.value = false
+        })
+  }
+
+};
+
+
 onMounted(() => {
   get_all_cards()
+  window.addEventListener("scroll", handleInfiniteScroll);
 })
 
 watch(is_card_updated, () => {
@@ -93,7 +136,7 @@ watch(is_card_updated, () => {
 </script>
 
 <template>
-  <div class="card_list_wrapper">
+  <div class="card_list_wrapper" id="card_feed">
 
     <edit-tools></edit-tools>
 
