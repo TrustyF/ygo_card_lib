@@ -84,6 +84,11 @@ function search_card() {
       })
 }
 
+function reset_card_search(){
+  page.value = 0
+  get_all_cards()
+}
+
 const handleInfiniteScroll = () => {
 
   const endOfPage = (window.innerHeight + 200) + window.scrollY >= document.body.offsetHeight;
@@ -142,7 +147,8 @@ watch(is_card_updated, () => {
 
     <div class="search_bar_wrapper">
       <label for="search_bar" style="margin-right: 5px">Search card</label>
-      <input type="text" id="search_bar" v-model="search_text" @keydown.enter="search_card" @keydown.esc="get_all_cards"
+      <input type="text" id="search_bar" v-model="search_text" @keydown.enter="search_card"
+             @keydown.esc="reset_card_search"
              @focus="$event.target.select()">
     </div>
 
