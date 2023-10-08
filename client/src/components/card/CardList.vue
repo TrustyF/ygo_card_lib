@@ -143,13 +143,15 @@ watch(is_card_updated, () => {
 <template>
   <div class="card_list_wrapper" id="card_feed">
 
-    <edit-tools></edit-tools>
+<!--    <edit-tools></edit-tools>-->
 
     <div class="search_bar_wrapper">
       <label for="search_bar" style="margin-right: 5px">Search card</label>
       <input type="text" id="search_bar" v-model="search_text" @keydown.enter="search_card"
              @keydown.esc="reset_card_search"
              @focus="$event.target.select()">
+      <button @click="reset_card_search">🔍</button>
+      <button @click="reset_card_search">✘</button>
     </div>
 
     <div class="card_list">
@@ -163,8 +165,10 @@ watch(is_card_updated, () => {
 
 <style scoped>
 .card_list_wrapper {
-  width: 100%;
-  outline: 3px solid red;
+  width: 90%;
+  margin: 10px auto 10px auto;
+  /*outline: 1px solid red;*/
+
   display: flex;
   flex-flow: column wrap;
 }
@@ -175,18 +179,9 @@ watch(is_card_updated, () => {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(v-bind(card_width), 1fr));
-  gap: 20px;
+  gap: 5px;
+  margin-top: 10px;
   justify-items: center;
-}
-
-.page_nav_wrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
-.page_nav_button {
-  width: 40px;
-  height: 40px;
 }
 
 </style>

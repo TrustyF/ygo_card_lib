@@ -14,9 +14,9 @@ const card_width = computed(() => String(card_size[0]) + 'px')
   <div class="footer" v-if="card['card_id']!==null">
     <h1>{{ card['name'] }}</h1>
 
+    <h2>{{ card['code'] }}</h2>
 
     <div class="code_and_rarity">
-      <h2>{{ card['code'] }}</h2>
       <h3 v-if="card['sell_price']">{{ card['sell_price'] + "$" }}</h3>
       <h3 v-else>{{ card['price'] + "$" }}</h3>
     </div>
@@ -69,7 +69,7 @@ const card_width = computed(() => String(card_size[0]) + 'px')
 }
 
 h1 {
-  font-size: 1.2em;
+  font-size: 1em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -77,6 +77,9 @@ h1 {
 
 h2 {
   font-size: 0.7em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 h3 {

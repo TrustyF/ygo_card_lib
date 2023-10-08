@@ -9,7 +9,8 @@ let is_card_updated = ref(false)
 let is_card_editing = ref(false)
 const card_storages = ref([])
 
-provide("card_size", [168, 246]);
+let card_scaling = 1.9
+provide("card_size", [168/card_scaling, 246/card_scaling]);
 provide('is_card_updated', is_card_updated)
 provide('card_storages', card_storages)
 provide('is_card_editing', is_card_editing)
@@ -23,6 +24,7 @@ function load_card_storages() {
         // console.log(data);
         card_storages.value = data
         card_storages.value.push({id: 0, 'name': 'null'})
+        // card_storages.value.sort((a, b) => a['id'] > b['id'])
         console.log(card_storages.value)
       })
 }
@@ -36,7 +38,7 @@ onMounted(() => {
 <template>
 
   <div class="main_wrapper">
-    <nav-bar-main></nav-bar-main>
+<!--    <nav-bar-main></nav-bar-main>-->
 
     <RouterView/>
   </div>
@@ -45,8 +47,9 @@ onMounted(() => {
 
 <style scoped>
 .main_wrapper {
-  outline: 1px solid red;
-  width: 80%;
+  /*outline: 1px solid red;*/
+  width: 100vw;
   margin: auto;
+  overflow: clip;
 }
 </style>

@@ -30,10 +30,10 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 </template>
 
 <style scoped>
-.card_image {
-  width: v-bind(card_width);
-  height: v-bind(card_height);
-}
+/*.card_image {*/
+/*  width: v-bind(card_width);*/
+/*  height: v-bind(card_height);*/
+/*}*/
 
 .wrapper {
   display: flex;
@@ -43,7 +43,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
   top: -10px;
   gap: 5px;
 
-  width: 25px;
+  width: 20px;
 }
 
 .tag_wrapper {
@@ -64,11 +64,11 @@ const card_height = computed(() => String(card_size[1]) + 'px')
   /*height: 25px;*/
 
   border-radius: 5px;
-  padding: 2px 7px 2px 7px;
+  padding: 1px 5px 1px 5px;
 
   color: white;
   font-family: Carlito, sans-serif;
-  font-size: 0.7em;
+  font-size: 0.6em;
   font-weight: bold;
   text-shadow: 1px 1px 2px black, 0 0 3px black;
 
@@ -82,13 +82,13 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 
 .badge {
   /*width: 25px;*/
-  height: 25px;
+  height: 20px;
 
   border-radius: 50%;
 
   color: white;
   font-family: Carlito, sans-serif;
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: bold;
   text-shadow: 1px 1px 2px black, 0 0 3px black;
 

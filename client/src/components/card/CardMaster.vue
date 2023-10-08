@@ -35,7 +35,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 <style scoped>
 .card {
   /*outline: 1px solid red;*/
-  margin: 15px;
+  margin: 5px;
 }
 .card_body {
   position: relative;
