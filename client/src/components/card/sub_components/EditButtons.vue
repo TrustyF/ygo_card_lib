@@ -124,7 +124,7 @@ function toggle_option(option) {
   position: absolute;
   display: flex;
   flex-flow: row wrap;
-  gap: 5px;
+  /*gap: 2px;*/
   /*outline: 1px solid red;*/
   z-index: 10;
 
@@ -136,10 +136,11 @@ function toggle_option(option) {
   background-color: #054a65;
   outline: none;
   border-style: none;
-  border-radius: 5px;
+  /*border-radius: 5px;*/
+  font-size: 0.6em;
   box-shadow: inset 1px 1px 1px #1fb1a2;
   color: white;
-  padding: 3px 7px 3px 7px;
+  padding: 2px 5px 2px 5px;
 }
 
 .category {

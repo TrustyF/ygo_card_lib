@@ -21,13 +21,6 @@ const card_width = computed(() => String(card_size[0]) + 'px')
       <h3 v-else>{{ card['price'] + "$" }}</h3>
     </div>
 
-    <div class="storage" v-if="card['storage_name']!==null">
-      <img :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" class="storage_image">
-      <h2>{{ card['storage_name'].replace(/_/g, ' ') }}</h2>
-    </div>
-
-
-
   </div>
 </template>
 
@@ -48,25 +41,7 @@ const card_width = computed(() => String(card_size[0]) + 'px')
   /*outline: 1px solid red;*/
 }
 
-.storage {
-  /*outline: 1px solid red;*/
-  display: flex;
-  flex-flow: row nowrap;
-  width: v-bind(card_width);
-  gap: 10px;
-  justify-content: flex-start;
-  align-items: center;
-  margin-top: 10px;
-}
 
-.storage_image {
-  /*position: absolute;*/
-  /*right: 0;*/
-  /*bottom: 0;*/
-  /*width: 30px;*/
-  height: 30px;
-  /*opacity: 50%;*/
-}
 
 h1 {
   font-size: 1em;

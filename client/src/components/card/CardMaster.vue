@@ -4,6 +4,7 @@ import EditButtons from "./sub_components/EditButtons.vue";
 import CardImage from "./sub_components/CardImage.vue";
 import CardFooter from "./sub_components/CardFooter.vue";
 import CardBadges from "./sub_components/CardBadges.vue";
+import CardStorage from "./sub_components/CardStorage.vue";
 
 let props = defineProps(["card"]);
 
@@ -23,6 +24,8 @@ const card_height = computed(() => String(card_size[1]) + 'px')
     <edit-buttons :card="card" v-if="is_card_editing"></edit-buttons>
 
     <div class="card_body">
+      <card-storage :card="card"></card-storage>
+
       <card-image :card="card"></card-image>
       <card-badges :card="card"></card-badges>
     </div>

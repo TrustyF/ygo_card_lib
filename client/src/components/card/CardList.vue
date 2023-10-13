@@ -7,6 +7,7 @@ let props = defineProps(["card_limit", "card_order"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
+const is_card_editing = inject("is_card_editing");
 const card_width = computed(() => String(card_size[0]) + 'px')
 let user_cards = ref([])
 let page = ref(0)
@@ -93,6 +94,12 @@ const handleInfiniteScroll = () => {
 
   const endOfPage = (window.innerHeight + 200) + window.scrollY >= document.body.offsetHeight;
 
+  // console.log(search_text.value)
+
+  if (search_text.value.length > 0) {
+    return
+  }
+
   if (endOfPage && !pageLoading.value && !pageFullLoaded.value) {
 
     console.log('loading more...')
@@ -143,14 +150,14 @@ watch(is_card_updated, () => {
 <template>
   <div class="card_list_wrapper" id="card_feed">
 
-<!--    <edit-tools></edit-tools>-->
+    <edit-tools v-if="is_card_editing"></edit-tools>
 
     <div class="search_bar_wrapper">
       <label for="search_bar" style="margin-right: 5px">Search card</label>
       <input type="text" id="search_bar" v-model="search_text" @keydown.enter="search_card"
              @keydown.esc="reset_card_search"
              @focus="$event.target.select()">
-      <button @click="reset_card_search">🔍</button>
+      <button @click="search_card">🔍</button>
       <button @click="reset_card_search">✘</button>
     </div>
 
@@ -178,10 +185,11 @@ watch(is_card_updated, () => {
 
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(v-bind(card_width), 1fr));
-  gap: 5px;
+  grid-template-columns: repeat(auto-fill, minmax(v-bind(card_width), 1fr));
+  /*grid-template-columns: repeat(20, 1fr);*/
+  gap: 10px;
   margin-top: 10px;
-  justify-items: center;
+  justify-items: left;
 }
 
 </style>

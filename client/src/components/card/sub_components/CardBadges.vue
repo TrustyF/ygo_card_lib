@@ -2,6 +2,7 @@
 import {inject, onMounted, watch, ref, computed} from "vue";
 
 let props = defineProps(["card"]);
+const is_card_editing = inject("is_card_editing");
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const card_width = computed(() => String(card_size[0]) + 'px')
@@ -14,12 +15,11 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 
     <div class="badge cyan" v-if="card['amount']>1"> {{ card['amount'] }}</div>
 
-    <img v-if="card['ban_tcg']==='Banned'" src="/assets/banned.png" alt="banned">
-    <img v-if="card['ban_tcg']==='Limited'" src="/assets/limited.png" alt="banned">
-    <img v-if="card['ban_tcg']==='Semi-Limited'" src="/assets/semi_limited.png" alt="banned">
+    <img v-if="card['ban_tcg']==='Banned' && is_card_editing" src="/assets/banned.png" alt="banned">
+    <img v-if="card['ban_tcg']==='Limited' && is_card_editing" src="/assets/limited.png" alt="banned">
+    <img v-if="card['ban_tcg']==='Semi-Limited' && is_card_editing" src="/assets/semi_limited.png" alt="banned">
 
-
-    <!--    <div class="badge yellow" v-if="card['is_staple']!==false">!</div>-->
+    <div class="badge yellow" v-if="card['is_staple']!==false && is_card_editing">!</div>
 
   </div>
 
