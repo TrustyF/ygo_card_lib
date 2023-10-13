@@ -18,8 +18,15 @@ provide('is_card_editing', is_card_editing)
 function load_card_storages() {
   const url = new URL(`${curr_api}/storage/get_all`)
   // url.searchParams.set('none','none')
+
   fetch(url)
-      .then(response => response.json())
+      // Handle http error
+      .then(response => {
+        if (!response.ok){
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+        return response.json()
+      })
       .then(data => {
         // console.log(data);
         card_storages.value = data

@@ -7,8 +7,9 @@ import VueLazyLoad from 'vue-lazyload'
 import LoadGif from '/assets/Card_loading.jpg'
 
 const local_api = "http://localhost:5000";
-const server_api = "https://ttt-trustyfox.pythonanywhere.com";
-const dev_mode = import.meta.env.DEV;
+const server_api = "https://ygo-TrustyFox.pythonanywhere.com";
+// const dev_mode = import.meta.env.DEV;
+const dev_mode = false;
 const edit_mode = true
 
 const app = createApp(App)

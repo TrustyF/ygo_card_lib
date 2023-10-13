@@ -10,7 +10,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 </script>
 
 <template>
-  <img v-lazy="`${curr_api}/card/get_image?id=${card['konami_id']}.jpg`" alt="card image" class="card_image">
+  <img v-lazy="`${curr_api}/card/get_image?id=${card['konami_id']}`" alt="card image" class="card_image">
 </template>
 
 <style scoped>
