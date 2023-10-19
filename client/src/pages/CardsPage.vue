@@ -8,7 +8,8 @@ const curr_api = inject("curr_api");
 </script>
 
 <template>
-  <card-list card_limit="50"></card-list>
+<!--  <card-list card_limit="50" card_order="new_first"></card-list>-->
+  <card-list card_limit="100"></card-list>
 </template>
 
 <style scoped>

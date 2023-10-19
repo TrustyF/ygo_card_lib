@@ -79,7 +79,8 @@ function toggle_option(option) {
       <div class="category">
         <div :id="`storage_id_list${card['user_card_id']}`" class="collapsable">
           <div class="storage_button" v-for="storage in card_storages" :key="storage['id']+card['user_card_id']">
-            <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;align-items: center;">
+            <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;  font-size: 0.6em;
+align-items: center;">
               {{ storage['name'].replace(/_/g, ' ') }}
               <img :src="`${curr_api}/storage/get_image?id=${storage['id']}`" style="height: 25px;margin-left: 10px">
             </button>
@@ -89,7 +90,8 @@ function toggle_option(option) {
     </div>
 
     <div>
-      <button class="main_list_button" @click="toggle_option(`card_language_list${card['user_card_id']}`)">Language</button>
+      <button class="main_list_button" @click="toggle_option(`card_language_list${card['user_card_id']}`)">Language
+      </button>
       <div class="category">
         <div :id="`card_language_list${card['user_card_id']}`" class="collapsable">
           <div class="language_button" v-for="lang in card_languages" :key="lang+card['user_card_id']">
@@ -126,7 +128,7 @@ function toggle_option(option) {
   flex-flow: row wrap;
   /*gap: 2px;*/
   /*outline: 1px solid red;*/
-  z-index: 10;
+  z-index: 100;
 
   /*overflow-y: scroll;*/
   /*scrollbar-width:none;*/
@@ -150,7 +152,7 @@ function toggle_option(option) {
   left: 0;
   overflow-y: scroll;
   scrollbar-width: none;
-  max-height: 250px;
+  max-height: 200px;
 }
 
 .collapsable {

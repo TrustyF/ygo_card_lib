@@ -15,6 +15,7 @@ let pageFullLoaded = ref(false)
 let search_text = ref('')
 
 let pageLoading = ref(false)
+let serverStatus = ref("none")
 
 const debug = computed(() => {
   return [window.innerHeight, window.scrollY, document.body.offsetHeight]
@@ -54,23 +55,41 @@ function group_same_cards(array) {
 
 function get_all_cards() {
   search_text.value = ''
+  serverStatus.value = "loading"
 
   const url = new URL(`${curr_api}/card/get_all`)
-
+  let retryLeft = 3
 
   url.searchParams.set('card_limit', String(props['card_limit']))
   url.searchParams.set('card_page', String(page.value))
   url.searchParams.set('ordering', String(props['card_order']))
 
-  fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        // data.sort((a, b) => a['price'] < b['price'])
+  while (retryLeft > 0) {
+    fetch(url)
 
-        user_cards.value = group_same_cards(data)
-        // user_cards.value = data
-        console.log('cards', data);
-      })
+        // Handle http error
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`)
+          }
+          return response.json()
+        })
+
+        // Process the returned JSON data
+        .then(data => {
+          user_cards.value = group_same_cards(data)
+          serverStatus.value = "loaded"
+          retryLeft = 0
+        })
+
+        // Handle any errors that occurred during the fetch
+        .catch(error => {
+          console.error('Error:', error);
+          serverStatus.value = "failed"
+
+        });
+    retryLeft -= 1
+  }
 }
 
 function search_card() {
@@ -85,14 +104,14 @@ function search_card() {
       })
 }
 
-function reset_card_search(){
+function reset_card_search() {
   page.value = 0
   get_all_cards()
 }
 
 const handleInfiniteScroll = () => {
 
-  const endOfPage = (window.innerHeight + 200) + window.scrollY >= document.body.offsetHeight;
+  const endOfPage = (window.innerHeight + 400) + window.scrollY >= document.body.offsetHeight;
 
   // console.log(search_text.value)
 
@@ -161,11 +180,27 @@ watch(is_card_updated, () => {
       <button @click="reset_card_search">✘</button>
     </div>
 
-    <div class="card_list">
+
+    <div v-if="serverStatus==='loaded'" class="card_list">
       <div v-for="card in user_cards" :key="card['user_card_id']">
         <CardMaster :card="card"></CardMaster>
       </div>
     </div>
+
+    <div v-if="serverStatus==='loading'"
+         style="display: flex;left: auto;top:0;position: absolute;height: 50%;width: 90%;align-items: center;justify-content: center;">
+      <img src="public/assets/loaders/482.svg"
+           style="width: 120px;height: 120px;position:absolute;">
+      <img src="public/assets/loaders/scapegoats_floating.gif"
+           style="width: 150px;height: 150px;position:absolute;">
+    </div>
+
+    <div v-if="serverStatus==='failed'"
+         style="display: flex;left: auto;top:auto;position: absolute;height: 50%;width: 90%;align-items: center;justify-content: center;margin-top: 10px">
+      <img src="public/assets/loaders/Failed%20To%20Load.png"
+           style="height: 100%;position:absolute;">
+    </div>
+
 
   </div>
 </template>

@@ -1,7 +1,8 @@
 <script setup>
-import {inject, onMounted, watch, ref, computed} from "vue";
+import {inject, onMounted, toRefs, watch, ref, computed} from "vue";
 
 let props = defineProps(["card"]);
+let refs = toRefs(props)
 const is_card_editing = inject("is_card_editing");
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
@@ -25,6 +26,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 
   <div class="tag_wrapper">
     <div class="tag red" v-if="card['card_damage']!==null">{{ card['card_damage'] }}</div>
+
     <div class="tag green" v-if="card['language']!==null"> {{ card['language'] }}</div>
   </div>
 </template>
@@ -61,7 +63,7 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 
 .tag {
   /*width: 25px;*/
-  /*height: 25px;*/
+  /*max-height: 25px;*/
 
   border-radius: 5px;
   padding: 1px 5px 1px 5px;
