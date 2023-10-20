@@ -9,8 +9,8 @@ const curr_api = inject("curr_api");
 <template>
   <div class="wrapper">
     <RouterLink class="link" to="/">Home</RouterLink>
-    <RouterLink class="link" to="/cards">Cards</RouterLink>
-    <RouterLink class="link" to="/scan_card">Card scan</RouterLink>
+    <RouterLink class="link" to="/all_cards">All Singles</RouterLink>
+<!--    <RouterLink class="link" to="/scan_card">Card scan</RouterLink>-->
   </div>
 </template>
 

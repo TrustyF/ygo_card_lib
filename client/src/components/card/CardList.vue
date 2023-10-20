@@ -3,7 +3,8 @@ import {inject, onMounted, watch, ref, computed, provide} from "vue";
 import CardMaster from "./CardMaster.vue";
 import EditTools from "../editing/EditTools.vue";
 
-let props = defineProps(["card_limit", "card_order"]);
+
+let props = defineProps(["card_limit", "card_order","storage"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
@@ -15,7 +16,6 @@ let pageFullLoaded = ref(false)
 let search_text = ref('')
 
 let pageLoading = ref(false)
-let serverStatus = ref("none")
 
 const debug = computed(() => {
   return [window.innerHeight, window.scrollY, document.body.offsetHeight]
@@ -55,7 +55,6 @@ function group_same_cards(array) {
 
 function get_all_cards() {
   search_text.value = ''
-  serverStatus.value = "loading"
 
   const url = new URL(`${curr_api}/card/get_all`)
   let retryLeft = 3
@@ -63,6 +62,7 @@ function get_all_cards() {
   url.searchParams.set('card_limit', String(props['card_limit']))
   url.searchParams.set('card_page', String(page.value))
   url.searchParams.set('ordering', String(props['card_order']))
+  url.searchParams.set('storage', String(props['storage']))
 
   while (retryLeft > 0) {
     fetch(url)
@@ -78,14 +78,12 @@ function get_all_cards() {
         // Process the returned JSON data
         .then(data => {
           user_cards.value = group_same_cards(data)
-          serverStatus.value = "loaded"
           retryLeft = 0
         })
 
         // Handle any errors that occurred during the fetch
         .catch(error => {
           console.error('Error:', error);
-          serverStatus.value = "failed"
 
         });
     retryLeft -= 1
@@ -169,16 +167,16 @@ watch(is_card_updated, () => {
 <template>
   <div class="card_list_wrapper" id="card_feed">
 
-    <edit-tools v-if="is_card_editing"></edit-tools>
+<!--    <edit-tools v-if="is_card_editing"></edit-tools>-->
 
-    <div class="search_bar_wrapper">
-      <label for="search_bar" style="margin-right: 5px">Search card</label>
-      <input type="text" id="search_bar" v-model="search_text" @keydown.enter="search_card"
-             @keydown.esc="reset_card_search"
-             @focus="$event.target.select()">
-      <button @click="search_card">🔍</button>
-      <button @click="reset_card_search">✘</button>
-    </div>
+<!--    <div class="search_bar_wrapper">-->
+<!--      <label for="search_bar" style="margin-right: 5px">Search card</label>-->
+<!--      <input type="text" id="search_bar" v-model="search_text" @keydown.enter="search_card"-->
+<!--             @keydown.esc="reset_card_search"-->
+<!--             @focus="$event.target.select()">-->
+<!--      <button @click="search_card">🔍</button>-->
+<!--      <button @click="reset_card_search">✘</button>-->
+<!--    </div>-->
 
 
     <div v-if="serverStatus==='loaded'" class="card_list">
@@ -187,19 +185,6 @@ watch(is_card_updated, () => {
       </div>
     </div>
 
-    <div v-if="serverStatus==='loading'"
-         style="display: flex;left: auto;top:0;position: absolute;height: 50%;width: 90%;align-items: center;justify-content: center;">
-      <img src="public/assets/loaders/482.svg"
-           style="width: 120px;height: 120px;position:absolute;">
-      <img src="public/assets/loaders/scapegoats_floating.gif"
-           style="width: 150px;height: 150px;position:absolute;">
-    </div>
-
-    <div v-if="serverStatus==='failed'"
-         style="display: flex;left: auto;top:auto;position: absolute;height: 50%;width: 90%;align-items: center;justify-content: center;margin-top: 10px">
-      <img src="public/assets/loaders/Failed%20To%20Load.png"
-           style="height: 100%;position:absolute;">
-    </div>
 
 
   </div>

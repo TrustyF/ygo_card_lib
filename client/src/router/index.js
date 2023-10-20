@@ -1,18 +1,17 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomePage from '/src/pages/HomePage.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
-        // {
-        //     path: '/',
-        //     name: 'home',
-        //     component: HomePage
-        // },
         {
             path: '/',
-            name: 'cards',
-            component: () => import('../pages/CardsPage.vue')
+            name: 'home',
+            component: () => import('../pages/HomePage.vue')
+        },
+        {
+            path: '/all_cards',
+            name: 'all_cards',
+            component: () => import('../pages/AllCardsPage.vue')
         },
         {
             path: '/scan_card',
