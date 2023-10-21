@@ -20,13 +20,15 @@ const curr_api = inject("curr_api");
   align-items: center;
   gap: 10px;
   background-color: #2c3e50;
-  padding: 5px;
+  padding: 10px 0 10px 30px;
+  margin-top: 10px;
 }
 .storage_image {
-  height: 30px
+  height: 50px
 }
 .storage_name {
-  font-size: 1em;
+  font-size: 1.2em;
+  color: white;
 }
 
 </style>

@@ -3,8 +3,7 @@ import {inject, onMounted, watch, ref, computed, provide} from "vue";
 import CardMaster from "./CardMaster.vue";
 import EditTools from "../editing/EditTools.vue";
 
-
-let props = defineProps(["card_limit", "card_order","storage"]);
+let props = defineProps(["card_limit", "card_order", "storage"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
@@ -62,32 +61,37 @@ function get_all_cards() {
   url.searchParams.set('card_limit', String(props['card_limit']))
   url.searchParams.set('card_page', String(page.value))
   url.searchParams.set('ordering', String(props['card_order']))
-  url.searchParams.set('storage', String(props['storage']))
+  url.searchParams.set('storage', props['storage'] !== undefined ? String(props['storage']['id']) : 'undefined')
 
-  while (retryLeft > 0) {
-    fetch(url)
 
-        // Handle http error
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
-          }
-          return response.json()
-        })
+  fetch(url)
 
-        // Process the returned JSON data
-        .then(data => {
-          user_cards.value = group_same_cards(data)
-          retryLeft = 0
-        })
+      // Handle http error
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+        return response.json()
+      })
 
-        // Handle any errors that occurred during the fetch
-        .catch(error => {
-          console.error('Error:', error);
+      // Process the returned JSON data
+      .then(data => {
 
-        });
-    retryLeft -= 1
-  }
+        if (data.length < 1) pageFullLoaded.value = true
+
+        user_cards.value = group_same_cards(user_cards.value.concat(data))
+
+        retryLeft = 0
+        pageLoading.value = false
+      })
+
+      // Handle any errors that occurred during the fetch
+      .catch(error => {
+        console.error('Error:', error);
+
+      });
+  retryLeft -= 1
+
 }
 
 function search_card() {
@@ -123,27 +127,7 @@ const handleInfiniteScroll = () => {
 
     pageLoading.value = true
     page.value += 1
-
-    const url = new URL(`${curr_api}/card/get_all`)
-    url.searchParams.set('card_page', String(page.value))
-    url.searchParams.set('ordering', String(props['card_order']))
-    url.searchParams.set('card_limit', String(props['card_limit']))
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-
-          if (data.length < 1) {
-            pageFullLoaded.value = true
-          }
-
-          console.log('test', data);
-          user_cards.value = group_same_cards(user_cards.value.concat(data))
-
-          console.log('usercards', user_cards.value)
-
-          pageLoading.value = false
-        })
+    get_all_cards()
   }
 
 };
@@ -167,25 +151,11 @@ watch(is_card_updated, () => {
 <template>
   <div class="card_list_wrapper" id="card_feed">
 
-<!--    <edit-tools v-if="is_card_editing"></edit-tools>-->
-
-<!--    <div class="search_bar_wrapper">-->
-<!--      <label for="search_bar" style="margin-right: 5px">Search card</label>-->
-<!--      <input type="text" id="search_bar" v-model="search_text" @keydown.enter="search_card"-->
-<!--             @keydown.esc="reset_card_search"-->
-<!--             @focus="$event.target.select()">-->
-<!--      <button @click="search_card">🔍</button>-->
-<!--      <button @click="reset_card_search">✘</button>-->
-<!--    </div>-->
-
-
-    <div v-if="serverStatus==='loaded'" class="card_list">
+    <div class="card_list">
       <div v-for="card in user_cards" :key="card['user_card_id']">
         <CardMaster :card="card"></CardMaster>
       </div>
     </div>
-
-
 
   </div>
 </template>
