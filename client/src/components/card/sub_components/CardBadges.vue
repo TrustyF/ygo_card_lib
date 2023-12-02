@@ -6,8 +6,8 @@ let refs = toRefs(props)
 const is_card_editing = inject("is_card_editing");
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
-const card_width = computed(() => String(card_size[0]) + 'px')
-const card_height = computed(() => String(card_size[1]) + 'px')
+const card_width = computed(() => String(card_size.value[0]) + 'px')
+const card_height = computed(() => String(card_size.value[1]) + 'px')
 
 </script>
 
@@ -126,5 +126,14 @@ const card_height = computed(() => String(card_size[1]) + 'px')
 .yellow {
   background-color: #e87707;
   /*box-shadow: inset 1px 1px 2px #ffa854, inset -2px -2px 2px #8c4500;*/
+}
+
+@media only screen and (max-width: 400px) {
+  .badge {
+    font-size: 0.7em;
+  }
+  .tag {
+    font-size: 0.3em;
+  }
 }
 </style>

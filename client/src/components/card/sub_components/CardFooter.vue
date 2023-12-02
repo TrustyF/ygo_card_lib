@@ -6,7 +6,7 @@ const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const card_storages = inject("card_storages");
 
-const card_width = computed(() => String(card_size[0]) + 'px')
+const card_width = computed(() => String(card_size.value[0]) + 'px')
 
 </script>
 
@@ -41,8 +41,6 @@ const card_width = computed(() => String(card_size[0]) + 'px')
   /*outline: 1px solid red;*/
 }
 
-
-
 h1 {
   font-size: 1em;
   white-space: nowrap;
@@ -60,5 +58,16 @@ h2 {
 h3 {
   font-size: 1em;
   font-weight: bold;
+}
+@media only screen and (max-width: 400px) {
+  h1 {
+    font-size: 0.5em;
+  }
+  h2 {
+    font-size: 0.4em;
+  }
+  h3 {
+    font-size: 0.5em;
+  }
 }
 </style>

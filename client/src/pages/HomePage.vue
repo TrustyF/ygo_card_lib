@@ -1,7 +1,7 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed} from "vue";
-import CardList from "../components/card/CardList.vue";
-import StorageHeader from "../components/storage/StorageHeader.vue";
+import CardListMaster from "../components/card list/CardListMaster.vue";
+
 
 // let props = defineProps(["test"]);
 const curr_api = inject("curr_api");
@@ -11,14 +11,8 @@ const card_storages = inject("card_storages");
 
 <template>
   <div v-for="storage in card_storages" :key="storage['id']">
-
-    <StorageHeader :storage="storage"></StorageHeader>
-    <card-list card_limit="50" :storage="storage"></card-list>
-
+    <card-list-master :storage="storage"></card-list-master>
   </div>
-
-  <!--  <card-list card_limit="50" card_order="new_first"></card-list>-->
-  <!--  <card-list card_limit="100"></card-list>-->
 </template>
 
 <style scoped>

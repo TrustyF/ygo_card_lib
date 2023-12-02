@@ -8,8 +8,8 @@ const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
 const card_storages = inject("card_storages");
 
-const card_width = computed(() => String(card_size[0]) + 'px')
-const card_height = computed(() => String(card_size[1]) + 'px')
+const card_width = computed(() => String(card_size.value[0]) + 'px')
+const card_height = computed(() => String(card_size.value[1]) + 'px')
 const card_languages = ["French", "null"]
 const card_damages = ["Light played", "Played", "Poor", "Damaged", "null"]
 

@@ -11,14 +11,15 @@ import failed_loader from "/src/assets/ui/connecterror.png"
 
 <template>
   <div class="page_loader_wrapper">
+
     <div v-if="status==='loading'" class="container">
-      <img :src="spinner_loader" alt="loader"
-           style="width: 30px;height: 30px">
+      <img :src="spinner_loader" alt="loader" style="width: 15px;height: 15px">
     </div>
+
     <div v-if="status==='failed'" class="container">
-      <img :src="failed_loader" alt="failed_loading"
-           style="width: 70px;height: 70px;filter: invert()">
+      <img :src="failed_loader" alt="failed_loading" style="width: 70px;height: 70px;filter: invert()">
     </div>
+
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import failed_loader from "/src/assets/ui/connecterror.png"
   align-items: center;
   justify-content: center;
 }
+
 .container {
   margin: 50px;
   display: flex;

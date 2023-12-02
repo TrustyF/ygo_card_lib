@@ -1,7 +1,7 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed, onUnmounted} from "vue";
 import CardMasterComponent from "../components/card/CardMaster.vue";
-import CardList from "../components/card/CardList.vue";
+import CardList from "../components/card list/CardList.vue";
 
 // let props = defineProps(["test"]);
 const curr_api = inject("curr_api");

@@ -1,7 +1,7 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed} from "vue";
-import CardList from "../components/card/CardList.vue";
-import StorageHeader from "../components/storage/StorageHeader.vue";
+import CardList from "../components/card list/CardList.vue";
+import StorageHeader from "../components/card list/StorageHeader.vue";
 
 // let props = defineProps(["test"]);
 const curr_api = inject("curr_api");

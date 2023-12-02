@@ -1,6 +1,6 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed, provide} from "vue";
-import CardMaster from "./CardMaster.vue";
+import CardMaster from "../card/CardMaster.vue";
 import EditTools from "../editing/EditTools.vue";
 import PageLoading from "@/components/generic/PageLoading.vue";
 
@@ -9,18 +9,16 @@ const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
 const is_card_editing = inject("is_card_editing");
-const card_width = computed(() => String(card_size[0]) + 'px')
+const card_width = computed(() => String(card_size.value[0]) + 'px')
+const card_order = ref(String(props['card_order']))
 let user_cards = ref([])
 let page = ref(0)
 let pageFullLoaded = ref(false)
 let search_text = ref('')
-let get_all_cards_status = ref("none")
+let get_all_cards_status = ref("loading")
+let card_list_container = ref()
 
 let pageLoading = ref(false)
-
-const debug = computed(() => {
-  return [window.innerHeight, window.scrollY, document.body.offsetHeight]
-})
 
 function group_same_cards(array) {
   let out = []
@@ -55,6 +53,7 @@ function group_same_cards(array) {
 }
 
 function get_all_cards() {
+  // console.log(props['storage']['name'] + ' is getting cards')
   search_text.value = ''
 
   const url = new URL(`${curr_api}/card/get_all`)
@@ -62,40 +61,28 @@ function get_all_cards() {
 
   url.searchParams.set('card_limit', String(props['card_limit']))
   url.searchParams.set('card_page', String(page.value))
-  url.searchParams.set('ordering', String(props['card_order']))
+  url.searchParams.set('ordering', String(card_order.value))
   url.searchParams.set('storage', props['storage'] !== undefined ? String(props['storage']['id']) : 'undefined')
 
 
   fetch(url)
-
-      // Handle http error
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`)
-        }
-        return response.json()
-      })
-
-      // Process the returned JSON data
+      .then(response => response.json())
       .then(data => {
-
-        if (data.length < 1) pageFullLoaded.value = true
 
         user_cards.value = group_same_cards(user_cards.value.concat(data))
 
-        retryLeft = 0
+        if (data.length < 1) pageFullLoaded.value = true
         pageLoading.value = false
         get_all_cards_status.value = "loaded"
       })
-
-      // Handle any errors that occurred during the fetch
       .catch(error => {
-        console.error('Error:', error);
         get_all_cards_status.value = "failed"
-
       });
-  retryLeft -= 1
+}
 
+function reload_cards (){
+  user_cards.value = []
+  get_all_cards()
 }
 
 function search_card() {
@@ -116,19 +103,16 @@ function reset_card_search() {
 }
 
 const handleInfiniteScroll = () => {
+  let container = card_list_container.value
+  let container_bot = container.getBoundingClientRect()
 
-  const endOfPage = (window.innerHeight + 400) + window.scrollY >= document.body.offsetHeight;
-
-  // console.log(search_text.value)
+  const endOfPage = (window.innerHeight+400) >= container_bot.bottom;
 
   if (search_text.value.length > 0) {
     return
   }
 
   if (endOfPage && !pageLoading.value && !pageFullLoaded.value) {
-
-    console.log('loading more...')
-
     pageLoading.value = true
     page.value += 1
     get_all_cards()
@@ -153,9 +137,14 @@ watch(is_card_updated, () => {
 </script>
 
 <template>
+  <div class="filters">
+    <button @click="card_order='none';reload_cards()">Price</button>
+    <button @click="card_order='card_type';reload_cards()">Type</button>
+    <button @click="card_order='card_archetype';reload_cards()">Archetype</button>
+    <button @click="card_order='new_first';reload_cards()">New</button>
+  </div>
   <page-loading :status="get_all_cards_status"></page-loading>
-  <div>{{get_all_cards_status}}</div>
-  <div class="card_list_wrapper" id="card_feed">
+  <div class="card_list_wrapper" ref="card_list_container">
 
     <div class="card_list">
       <div v-for="card in user_cards" :key="card['user_card_id']">
@@ -167,6 +156,11 @@ watch(is_card_updated, () => {
 </template>
 
 <style scoped>
+.filters {
+  display: flex;
+  gap: 10px;
+  padding: 10px 10px 0 10px;
+}
 .card_list_wrapper {
   width: 90%;
   margin: 10px auto 10px auto;
@@ -184,8 +178,16 @@ watch(is_card_updated, () => {
   grid-template-columns: repeat(auto-fill, minmax(v-bind(card_width), 1fr));
   /*grid-template-columns: repeat(20, 1fr);*/
   gap: 10px;
-  margin-top: 10px;
-  justify-items: left;
+  /*margin-top: 10px;*/
+  justify-items: center;
+}
+@media only screen and (max-width: 400px) {
+  .card_list_wrapper {
+    width: 95%;
+  }
+  .card_list {
+    gap: 3px;
+  }
 }
 
 </style>
