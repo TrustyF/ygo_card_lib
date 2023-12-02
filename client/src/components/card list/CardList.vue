@@ -52,7 +52,7 @@ function group_same_cards(array) {
   return out
 }
 
-function get_all_cards() {
+function get_all_cards(operation) {
   // console.log(props['storage']['name'] + ' is getting cards')
   search_text.value = ''
 
@@ -69,7 +69,8 @@ function get_all_cards() {
       .then(response => response.json())
       .then(data => {
 
-        user_cards.value = group_same_cards(user_cards.value.concat(data))
+        if (operation === 'clean') user_cards.value = data
+        else user_cards.value = group_same_cards(user_cards.value.concat(data))
 
         if (data.length < 1) pageFullLoaded.value = true
         pageLoading.value = false
@@ -81,8 +82,8 @@ function get_all_cards() {
 }
 
 function reload_cards (){
-  user_cards.value = []
-  get_all_cards()
+  // get_all_cards_status.value = "loading"
+  get_all_cards('clean')
 }
 
 function search_card() {
