@@ -2,6 +2,7 @@
 import {inject, onMounted, watch, ref, computed, provide} from "vue";
 import CardMaster from "./CardMaster.vue";
 import EditTools from "../editing/EditTools.vue";
+import PageLoading from "@/components/generic/PageLoading.vue";
 
 let props = defineProps(["card_limit", "card_order", "storage"]);
 const curr_api = inject("curr_api");
@@ -13,6 +14,7 @@ let user_cards = ref([])
 let page = ref(0)
 let pageFullLoaded = ref(false)
 let search_text = ref('')
+let get_all_cards_status = ref("none")
 
 let pageLoading = ref(false)
 
@@ -83,11 +85,13 @@ function get_all_cards() {
 
         retryLeft = 0
         pageLoading.value = false
+        get_all_cards_status.value = "loaded"
       })
 
       // Handle any errors that occurred during the fetch
       .catch(error => {
         console.error('Error:', error);
+        get_all_cards_status.value = "failed"
 
       });
   retryLeft -= 1
@@ -149,6 +153,8 @@ watch(is_card_updated, () => {
 </script>
 
 <template>
+  <page-loading :status="get_all_cards_status"></page-loading>
+  <div>{{get_all_cards_status}}</div>
   <div class="card_list_wrapper" id="card_feed">
 
     <div class="card_list">
