@@ -68,9 +68,15 @@ function get_all_cards(operation) {
   fetch(url)
       .then(response => response.json())
       .then(data => {
+        let newData
 
-        if (operation === 'clean') user_cards.value = data
-        else user_cards.value = group_same_cards(user_cards.value.concat(data))
+        if (operation === 'clean') {
+          newData = data
+        } else {
+          newData = user_cards.value.concat(data)
+        }
+
+        user_cards.value = group_same_cards(newData)
 
         if (data.length < 1) pageFullLoaded.value = true
         pageLoading.value = false
@@ -81,7 +87,7 @@ function get_all_cards(operation) {
       });
 }
 
-function reload_cards (){
+function reload_cards() {
   // get_all_cards_status.value = "loading"
   get_all_cards('clean')
 }
@@ -107,7 +113,7 @@ const handleInfiniteScroll = () => {
   let container = card_list_container.value
   let container_bot = container.getBoundingClientRect()
 
-  const endOfPage = (window.innerHeight+400) >= container_bot.bottom;
+  const endOfPage = (window.innerHeight + 400) >= container_bot.bottom;
 
   if (search_text.value.length > 0) {
     return
@@ -162,6 +168,7 @@ watch(is_card_updated, () => {
   gap: 10px;
   padding: 10px 10px 0 10px;
 }
+
 .card_list_wrapper {
   width: 90%;
   margin: 10px auto 10px auto;
@@ -182,10 +189,12 @@ watch(is_card_updated, () => {
   /*margin-top: 10px;*/
   justify-items: center;
 }
+
 @media only screen and (max-width: 400px) {
   .card_list_wrapper {
     width: 95%;
   }
+
   .card_list {
     gap: 3px;
   }
