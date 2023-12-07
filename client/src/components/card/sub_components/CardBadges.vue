@@ -9,9 +9,6 @@ const card_size = inject("card_size");
 const card_width = computed(() => String(card_size.value[0]) + 'px')
 const card_height = computed(() => String(card_size.value[1]) + 'px')
 
-onMounted(()=>{
-  console.log(props['card'])
-})
 </script>
 
 <template>

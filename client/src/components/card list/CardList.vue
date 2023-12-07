@@ -1,10 +1,10 @@
 <script setup>
-import {inject, onMounted, watch, ref, computed, provide} from "vue";
+import {computed, inject, onMounted, ref} from "vue";
 import CardMaster from "../card/CardMaster.vue";
-import EditTools from "../editing/EditTools.vue";
-import PageLoading from "@/components/generic/PageLoading.vue";
-import thin_cross from '/src/assets/ui/thin_x_button.png'
-import arrow_left from '/src/assets/ui/arrow_left_single_white.png'
+import PageLoading from "../../components/generic/PageLoading.vue";
+import ListSearch from "./sub_components/ListSearch.vue";
+import ListFilters from "./sub_components/ListFilters.vue";
+import {request_card_by_name, request_cards} from "../requests.js"
 
 let props = defineProps(["card_limit", "card_order", "storage"]);
 const curr_api = inject("curr_api");
@@ -14,10 +14,10 @@ const is_card_editing = inject("is_card_editing");
 const card_width = computed(() => String(card_size.value[0]) + 'px')
 const card_order = ref(String(props['card_order']))
 const card_limit = ref(String(props['card_limit']))
+const card_storage = computed(() => String(props['storage']['id']))
 let user_cards = ref([])
 let page = ref(0)
 let pageFullLoaded = ref(false)
-let search_text = ref('')
 let get_all_cards_status = ref("loading")
 let card_list_container = ref()
 let search_box_container = ref(null)
@@ -56,67 +56,59 @@ function group_same_cards(array) {
   return out
 }
 
-function get_all_cards(operation) {
-  // console.log(props['storage']['name'] + ' is getting cards')
-  search_text.value = ''
+// override user cards with requested cards
+function get_cards() {
+  request_cards({limit: card_limit, order: card_order, page: page, storage: card_storage})
+      .then(result => {
+        user_cards.value = group_same_cards(result)
 
-  const url = new URL(`${curr_api}/card/get_all`)
-
-  url.searchParams.set('card_limit', String(card_limit.value))
-  url.searchParams.set('card_page', String(page.value))
-  url.searchParams.set('ordering', String(card_order.value))
-  url.searchParams.set('storage', props['storage'] !== undefined ? String(props['storage']['id']) : 'undefined')
-
-  fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        let newData
-
-        if (operation === 'clean') {
-          newData = data
-        } else {
-          newData = user_cards.value.concat(data)
-        }
-
-        user_cards.value = group_same_cards(newData)
-
-        if (data.length < 1) pageFullLoaded.value = true
+        if (result.length < 1) pageFullLoaded.value = true
         pageLoading.value = false
         get_all_cards_status.value = "loaded"
 
         handleInfiniteScroll()
       })
-      .catch(error => {
-        get_all_cards_status.value = "failed"
-      });
+}
 
+// add requested cards to list of cards
+function concat_cards() {
+  request_cards({limit: card_limit, order: card_order, page: page, storage: card_storage})
+      .then(result => {
+        let newData
+        newData = user_cards.value.concat(result)
+        user_cards.value = group_same_cards(newData)
+
+        if (result.length < 1) pageFullLoaded.value = true
+        pageLoading.value = false
+        get_all_cards_status.value = "loaded"
+
+        handleInfiniteScroll()
+      })
+}
+
+function apply_filter(filter) {
+  card_order.value = filter
+  reload_cards()
 }
 
 function reload_cards() {
   // get_all_cards_status.value = "loading"
   page.value = 0
-  card_limit.value = '100'
+  // card_limit.value = '100'
   pageFullLoaded.value = false
-  get_all_cards('clean')
+  get_cards()
 }
 
-function search_card() {
-  console.log(search_text.value)
-  if (search_text.value === "" || search_text.value === undefined) return
+function search_card(text) {
+  console.log(text)
+  if (text === "" || text === undefined) {
+    reload_cards()
+    return null
+  }
 
-  const url = new URL(`${curr_api}/card/search_by_name`)
-  url.searchParams.set('name', search_text.value)
-  fetch(url)
-      .then(response => response.json())
-      .then(data => {
-
-        user_cards.value = group_same_cards(data)
-      })
-}
-
-function reset_card_search() {
-  page.value = 0
-  get_all_cards()
+  request_card_by_name(text)
+      .then(data => user_cards.value = group_same_cards(data)
+      )
 }
 
 const handleInfiniteScroll = () => {
@@ -127,68 +119,30 @@ const handleInfiniteScroll = () => {
 
   const endOfPage = (window.innerHeight + 400) >= container_bot.bottom;
 
-  if (search_text.value.length > 0) {
-    return
-  }
-
   if (endOfPage && !pageLoading.value && !pageFullLoaded.value) {
     pageLoading.value = true
     page.value += 1
-    get_all_cards()
+    console.log('loading more')
+    concat_cards()
   }
 
 };
 
-function highlight_button(elem) {
-
-  let highlighted_buttons = document.getElementsByClassName('button')
-
-  for (let btn of highlighted_buttons) btn.classList.remove('highlight')
-
-  if (elem.target.classList.contains('highlight')) {
-    elem.target.classList.remove('highlight')
-
-  } else {
-    elem.target.classList.add('highlight')
-  }
-}
-
-
 onMounted(() => {
-  get_all_cards()
+  get_cards()
   window.addEventListener("scroll", handleInfiniteScroll);
 })
 
-// watch(is_card_updated, () => {
-//   if (search_text.value === '') {
-//     get_all_cards()
-//   } else {
-//     search_card(search_text.value)
-//   }
-//   is_card_updated.value = false
-// })
 </script>
 
 <template>
 
   <page-loading :status="get_all_cards_status"></page-loading>
   <div class="card_list_wrapper" ref="card_list_container">
+
     <div class="filters">
-
-      <div style="position: relative;display: flex;align-items: center">
-        <input placeholder="Search card" ref="search_box_container" @change="search_text=$event.target.value"
-               @keydown.enter="search_text=$event.target.value;search_card()"
-               @keydown.esc="$event.target.value='';get_all_cards('clean')" :value="search_text">
-        <button class="button" @click="search_card()" style="margin-left: 10px">Enter</button>
-        <button class="button" @click="search_text='';get_all_cards('clean')" style="margin-left: 5px">Clear</button>
-      </div>
-
-      <p>Filters:</p>
-      <button class="button highlight" @click="highlight_button($event);card_order='none';reload_cards()">Price</button>
-      <button class="button" @click="highlight_button($event);card_order='card_type';reload_cards()">Type</button>
-      <button class="button" @click="highlight_button($event);card_order='card_archetype';reload_cards()">Archetype
-      </button>
-      <button class="button" @click="highlight_button($event);card_order='new_first';reload_cards()">New</button>
+      <list-search @search_text="(s) => search_card(s)"/>
+      <list-filters @filter="(f) => apply_filter(f)"/>
     </div>
 
     <div class="card_list">
@@ -206,25 +160,6 @@ onMounted(() => {
   flex-flow: row wrap;
   gap: 10px;
   padding-bottom: 10px;
-}
-
-.button {
-  cursor: pointer;
-  color: white;
-  padding: 5px 7px 5px 7px;
-  border: 1px solid;
-  border-radius: 8px;
-  background: none;
-}
-
-.button:hover {
-  color: black;
-  background: white;
-}
-
-.highlight {
-  color: black;
-  background: white;
 }
 
 .card_list_wrapper {

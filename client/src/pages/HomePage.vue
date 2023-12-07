@@ -1,6 +1,6 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed} from "vue";
-import CardListMaster from "../components/card list/CardListMaster.vue";
+import CardListMaster from "../components/card list/CardListStorageHeader.vue";
 
 
 // let props = defineProps(["test"]);

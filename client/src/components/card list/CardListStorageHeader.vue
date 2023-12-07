@@ -1,6 +1,6 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed} from "vue";
-import StorageHeader from "./StorageHeader.vue";
+import StorageHeader from "./sub_components/StorageHeader.vue";
 import CardList from "./CardList.vue";
 
 let props = defineProps(["storage"]);
