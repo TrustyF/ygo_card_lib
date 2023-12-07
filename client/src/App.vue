@@ -23,26 +23,24 @@ function load_card_storages() {
   const url = new URL(`${curr_api}/storage/get_all`)
 
   fetch(url)
-      .then(response => {
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
         card_storages.value = data
         load_card_storages_status.value = "loaded"
       })
       .catch(error => {
-        console.log('test failed')
+        load_card_storages_status.value = "failed"
       });
 }
 
-function wake_up_ping(){
+function wake_up_ping() {
   const url = new URL(`${curr_api}/`)
   fetch(url)
 }
 
-function scale_card_to_width(){
+function scale_card_to_width() {
   console.log(window.innerWidth)
-  if (window.innerWidth < 400){
+  if (window.innerWidth < 400) {
     card_scaling.value = 2.5
   }
 }

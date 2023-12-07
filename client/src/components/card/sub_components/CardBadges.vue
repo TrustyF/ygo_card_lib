@@ -9,11 +9,15 @@ const card_size = inject("card_size");
 const card_width = computed(() => String(card_size.value[0]) + 'px')
 const card_height = computed(() => String(card_size.value[1]) + 'px')
 
+onMounted(()=>{
+  console.log(props['card'])
+})
 </script>
 
 <template>
   <div class="wrapper" v-if="card['card_id']!==null">
 
+<!--    <img style="margin: -10px;max-width: 50px;object-fit: contain" :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" alt="banned">-->
     <div class="badge cyan" v-if="card['amount']>1"> {{ card['amount'] }}</div>
 
     <img v-if="card['ban_tcg']==='Banned' && is_card_editing" src="/assets/banned.png" alt="banned">
@@ -26,17 +30,11 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 
   <div class="tag_wrapper">
     <div class="tag red" v-if="card['card_damage']!==null">{{ card['card_damage'] }}</div>
-
     <div class="tag green" v-if="card['language']!==null"> {{ card['language'] }}</div>
   </div>
 </template>
 
 <style scoped>
-/*.card_image {*/
-/*  width: v-bind(card_width);*/
-/*  height: v-bind(card_height);*/
-/*}*/
-
 .wrapper {
   display: flex;
   flex-flow: column nowrap;

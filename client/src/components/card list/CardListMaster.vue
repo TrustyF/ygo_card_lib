@@ -10,9 +10,7 @@ let collapsed = ref(false)
 </script>
 
 <template>
-  <storage-header :storage="storage"></storage-header>
-  <button @click="collapsed = !collapsed">Collapse</button>
-
+  <storage-header :storage="storage" @collapsed="collapsed = !collapsed"></storage-header>
   <card-list card_limit="50" :storage="storage" v-if="collapsed===false"></card-list>
 </template>
 
