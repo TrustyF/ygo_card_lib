@@ -8,8 +8,8 @@ import LoadGif from '/assets/Card_loading.jpg'
 
 const local_api = "http://192.168.1.11:5000";
 const server_api = "https://ygo-TrustyFox.pythonanywhere.com";
-const dev_mode = import.meta.env.DEV;
-// const dev_mode = false;
+// const dev_mode = import.meta.env.DEV;
+const dev_mode = false;
 const debug_mode = import.meta.env.DEV;
 // const debug_mode = false
 const curr_api = dev_mode ? local_api : server_api

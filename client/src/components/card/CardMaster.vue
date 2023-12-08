@@ -10,6 +10,7 @@ let props = defineProps(["card"]);
 
 const curr_api = inject("curr_api");
 const is_card_editing = inject("is_card_editing");
+const debug_mode = inject("debug_mode");
 
 const card_size = inject("card_size");
 const card_width = computed(() => String(card_size.value[0]) + 'px')
@@ -20,7 +21,7 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 <template>
 
   <div class="card">
-    <edit-buttons :card="card" v-if="is_card_editing"></edit-buttons>
+    <edit-buttons :card="card" v-if="is_card_editing && debug_mode"></edit-buttons>
 
     <div class="card_body">
 <!--      <card-storage :card="card"></card-storage>-->
