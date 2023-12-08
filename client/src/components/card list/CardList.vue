@@ -1,5 +1,5 @@
 <script setup>
-import {computed, inject, onMounted, ref} from "vue";
+import {computed, inject, onMounted, ref, watch} from "vue";
 import CardMaster from "../card/CardMaster.vue";
 import PageLoading from "../../components/generic/PageLoading.vue";
 import ListSearch from "./sub_components/ListSearch.vue";
@@ -21,6 +21,7 @@ let pageFullLoaded = ref(false)
 let get_all_cards_status = ref("loading")
 let card_list_container = ref()
 let search_box_container = ref(null)
+let search_text = ref('')
 
 let pageLoading = ref(false)
 
@@ -58,15 +59,16 @@ function group_same_cards(array) {
 
 // override user cards with requested cards
 function get_cards() {
+  console.log('getting cards')
   request_cards({limit: card_limit, order: card_order, page: page, storage: card_storage})
       .then(result => {
+        console.log(result)
         user_cards.value = group_same_cards(result)
+        console.log(user_cards.value)
 
         if (result.length < 1) pageFullLoaded.value = true
         pageLoading.value = false
         get_all_cards_status.value = "loaded"
-
-        handleInfiniteScroll()
       })
 }
 
@@ -81,8 +83,6 @@ function concat_cards() {
         if (result.length < 1) pageFullLoaded.value = true
         pageLoading.value = false
         get_all_cards_status.value = "loaded"
-
-        handleInfiniteScroll()
       })
 }
 
@@ -94,26 +94,37 @@ function apply_filter(filter) {
 function reload_cards() {
   // get_all_cards_status.value = "loading"
   page.value = 0
-  // card_limit.value = '100'
+  card_limit.value = '50'
+  pageFullLoaded.value = false
+  get_cards()
+}
+
+function refresh_cards() {
+  // get_all_cards_status.value = "loading"
+  card_limit.value = String(400)
+  page.value = 0
   pageFullLoaded.value = false
   get_cards()
 }
 
 function search_card(text) {
-  console.log(text)
-  if (text === "" || text === undefined) {
+  search_text.value = text
+  console.log(search_text.value)
+  if (search_text.value === "" || search_text.value === undefined) {
     reload_cards()
     return null
   }
 
-  request_card_by_name(text)
-      .then(data => user_cards.value = group_same_cards(data)
+  request_card_by_name({name:search_text.value,storage: card_storage})
+      .then(data => user_cards.value = data
       )
 }
 
 const handleInfiniteScroll = () => {
   let container = card_list_container.value
   if (container === null) return;
+
+  if (search_text.value !== '') return;
 
   let container_bot = container.getBoundingClientRect()
 
@@ -130,7 +141,16 @@ const handleInfiniteScroll = () => {
 
 onMounted(() => {
   get_cards()
+  new ResizeObserver(handleInfiniteScroll).observe(card_list_container.value)
   window.addEventListener("scroll", handleInfiniteScroll);
+})
+
+watch(is_card_updated, (newV, oldV) => {
+  console.log('card updated', newV, oldV)
+  if (newV === true) {
+    refresh_cards()
+    is_card_updated.value = false
+  }
 })
 
 </script>

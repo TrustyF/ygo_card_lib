@@ -10,14 +10,15 @@ const local_api = "http://192.168.1.11:5000";
 const server_api = "https://ygo-TrustyFox.pythonanywhere.com";
 const dev_mode = import.meta.env.DEV;
 // const dev_mode = false;
-const edit_mode = true
+const debug_mode = import.meta.env.DEV;
+// const debug_mode = false
 const curr_api = dev_mode ? local_api : server_api
 
 const app = createApp(App)
 
 app.provide("curr_api", curr_api);
 app.provide("dev_mode", dev_mode);
-app.provide("edit_mode", edit_mode);
+app.provide("debug_mode", debug_mode);
 app.use(router)
 
 app.use(VueLazyLoad, {

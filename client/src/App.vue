@@ -9,7 +9,7 @@ let card_scaling = ref(1.9)
 let card_size = computed(() => [168 / card_scaling.value, 246 / card_scaling.value])
 
 let is_card_updated = ref(false)
-let is_card_editing = ref(false)
+let is_card_editing = ref(true)
 const card_storages = ref([])
 let load_card_storages_status = ref("none")
 

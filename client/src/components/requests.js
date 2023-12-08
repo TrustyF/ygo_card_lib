@@ -1,7 +1,8 @@
 import curr_api from "../main.js"
 
 export function request_cards({limit, page, order, storage}) {
-    // console.log(limit.value,page.value,order.value,storage.value)
+    console.log(limit.value,page.value,order.value,storage.value)
+    console.log('card request')
 
     const url = new URL(`${curr_api}/card/get_all`)
 
@@ -12,16 +13,25 @@ export function request_cards({limit, page, order, storage}) {
     url.searchParams.set('storage', String(storage.value))
 
     return fetch(url)
-        .then(response => response.json())
+        .then(response => {
+            console.log('card request ok')
+            if (response.ok) {
+                console.log('card request',response)
+                return response.json()
+            }
+        })
         .catch(error => {
             throw error
         });
 
 }
 
-export function request_card_by_name(name) {
+export function request_card_by_name({name,storage}) {
     const url = new URL(`${curr_api}/card/search_by_name`)
+
     url.searchParams.set('name', name)
+    url.searchParams.set('storage', String(storage.value))
+
     return fetch(url)
         .then(response => response.json())
 }

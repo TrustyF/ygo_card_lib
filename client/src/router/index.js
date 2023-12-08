@@ -18,6 +18,11 @@ const router = createRouter({
             name: 'scan_card',
             component: () => import('../pages/ScanCardPage.vue')
         },
+        {
+            path: '/add_cards',
+            name: 'add_cards',
+            component: () => import('../pages/AddCardPage.vue')
+        },
     ]
 })
 

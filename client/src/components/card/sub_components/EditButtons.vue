@@ -8,13 +8,25 @@ const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
 const card_storages = inject("card_storages");
 
+const visible = ref(false)
+
 const card_width = computed(() => String(card_size.value[0]) + 'px')
 const card_height = computed(() => String(card_size.value[1]) + 'px')
 const card_languages = ["French", "null"]
 const card_damages = ["Light played", "Played", "Poor", "Damaged", "null"]
 
 function delete_card(card_id) {
+  console.log('delete',card_id)
   const url = new URL(`${curr_api}/card/delete`)
+  url.searchParams.set('id', String(card_id))
+  fetch(url)
+      .then(() => {
+        is_card_updated.value = true
+      })
+}
+function add_card(card_id){
+  console.log('add',card_id)
+  const url = new URL(`${curr_api}/card/add`)
   url.searchParams.set('id', String(card_id))
   fetch(url)
       .then(() => {
@@ -49,10 +61,16 @@ function toggle_option(option) {
 </script>
 
 <template>
-  <div class="buttons_wrapper">
+  <div class="hit_box" @click="visible = !visible"></div>
+
+  <div class="buttons_wrapper" v-if="visible">
 
     <div>
       <button class="main_list_button" @click="delete_card(card['user_card_id'])">x</button>
+    </div>
+
+    <div>
+      <button class="main_list_button" @click="add_card(card['card_template_id'])">Add</button>
     </div>
 
     <div>
@@ -120,6 +138,15 @@ align-items: center;">
 </template>
 
 <style scoped>
+.hit_box {
+  position: absolute;
+  /*outline: 1px solid red;*/
+  width: v-bind(card_width);
+  height: v-bind(card_height);
+  z-index: 20;
+
+  cursor: pointer;
+}
 .buttons_wrapper {
   max-width: v-bind(card_width);
   max-height: v-bind(card_height);

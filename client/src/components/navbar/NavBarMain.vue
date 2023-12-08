@@ -3,6 +3,7 @@ import {inject, onMounted, watch, ref, computed} from "vue";
 
 let props = defineProps(["test"]);
 const curr_api = inject("curr_api");
+const debug_mode = inject("debug_mode");
 
 </script>
 
@@ -10,6 +11,7 @@ const curr_api = inject("curr_api");
   <div class="wrapper">
     <RouterLink class="link" to="/">Home</RouterLink>
     <RouterLink class="link" to="/all_cards">All Singles</RouterLink>
+    <RouterLink v-if="debug_mode" class="link" to="/add_cards">Add Card</RouterLink>
 <!--    <RouterLink class="link" to="/scan_card">Card scan</RouterLink>-->
   </div>
 </template>

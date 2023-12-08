@@ -9,7 +9,6 @@ import CardStorage from "./sub_components/CardStorage.vue";
 let props = defineProps(["card"]);
 
 const curr_api = inject("curr_api");
-const edit_mode = inject("edit_mode");
 const is_card_editing = inject("is_card_editing");
 
 const card_size = inject("card_size");
@@ -24,7 +23,7 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
     <edit-buttons :card="card" v-if="is_card_editing"></edit-buttons>
 
     <div class="card_body">
-      <card-storage :card="card"></card-storage>
+<!--      <card-storage :card="card"></card-storage>-->
       <card-image :card="card"></card-image>
       <card-badges :card="card"></card-badges>
     </div>
