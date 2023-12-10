@@ -4,6 +4,7 @@ import {inject, onMounted, watch, ref, computed} from "vue";
 let props = defineProps(["test"]);
 let emits = defineEmits(["filter"]);
 const curr_api = inject("curr_api");
+const debug_mode = inject("debug_mode");
 
 function highlight_button(elem) {
 
@@ -28,6 +29,7 @@ function highlight_button(elem) {
   <button class="button" @click="highlight_button($event);emits('filter','card_type')">Type</button>
   <button class="button" @click="highlight_button($event);emits('filter','card_archetype')">Archetype</button>
   <button class="button" @click="highlight_button($event);emits('filter','new_first')">New</button>
+  <button class="button" v-if="debug_mode" @click="highlight_button($event);emits('filter','updated')">updated</button>
 
 </template>
 

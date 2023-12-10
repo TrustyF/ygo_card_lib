@@ -9,6 +9,7 @@ import {request_card_by_name, request_cards} from "../requests.js"
 let props = defineProps(["card_limit", "card_order", "storage"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
+const debug_mode = inject("debug_mode");
 const is_card_updated = inject("is_card_updated");
 const is_card_editing = inject("is_card_editing");
 const card_width = computed(() => String(card_size.value[0]) + 'px')
@@ -58,13 +59,12 @@ function group_same_cards(array) {
 }
 
 // override user cards with requested cards
-function get_cards() {
+async function get_cards() {
   console.log('getting cards')
-  request_cards({limit: card_limit, order: card_order, page: page, storage: card_storage})
+  await request_cards({limit: card_limit.value, order: card_order.value, page: page.value, storage: card_storage.value})
       .then(result => {
-        console.log(result)
+        if (debug_mode) console.log(result)
         user_cards.value = group_same_cards(result)
-        console.log(user_cards.value)
 
         if (result.length < 1) pageFullLoaded.value = true
         pageLoading.value = false
@@ -74,7 +74,7 @@ function get_cards() {
 
 // add requested cards to list of cards
 function concat_cards() {
-  request_cards({limit: card_limit, order: card_order, page: page, storage: card_storage})
+  request_cards({limit: card_limit.value, order: card_order.value, page: page.value, storage: card_storage.value})
       .then(result => {
         let newData
         newData = user_cards.value.concat(result)
@@ -93,15 +93,15 @@ function apply_filter(filter) {
 
 function reload_cards() {
   // get_all_cards_status.value = "loading"
+  // card_limit.value = '50'
   page.value = 0
-  card_limit.value = '50'
   pageFullLoaded.value = false
   get_cards()
 }
 
 function refresh_cards() {
   // get_all_cards_status.value = "loading"
-  card_limit.value = String(400)
+  // card_limit.value = String(400)
   page.value = 0
   pageFullLoaded.value = false
   get_cards()
@@ -115,7 +115,7 @@ function search_card(text) {
     return null
   }
 
-  request_card_by_name({name:search_text.value,storage: card_storage})
+  request_card_by_name({name: search_text.value, storage: card_storage})
       .then(data => user_cards.value = data
       )
 }
@@ -146,8 +146,9 @@ onMounted(() => {
 })
 
 watch(is_card_updated, (newV, oldV) => {
-  console.log('card updated', newV, oldV)
+  console.log('test triggered')
   if (newV === true) {
+    console.log('card updated, cardList', newV, oldV)
     refresh_cards()
     is_card_updated.value = false
   }
@@ -184,11 +185,12 @@ watch(is_card_updated, (newV, oldV) => {
 
 .card_list_wrapper {
   width: 90%;
+  height: 100%;
   margin: 10px auto 10px auto;
   /*outline: 1px solid red;*/
 
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column nowrap;
 }
 
 .card_list {

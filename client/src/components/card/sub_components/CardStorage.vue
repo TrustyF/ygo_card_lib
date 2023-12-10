@@ -15,7 +15,7 @@ const visible = ref(false)
 <template>
   <div class="hit_box" @click="visible = !visible"></div>
   <div :class="visible ? 'storage visible' : 'storage'" v-if="card['storage_name']!==null">
-    <img :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" class="storage_image">
+    <img :src="`src/assets/images_storage/${card['storage_name']}_thumbnail.png`" alt="storage_img" class="storage_image">
     <h1>{{ card['storage_name'].replace(/_/g, ' ') }}</h1>
   </div>
 </template>
@@ -68,8 +68,9 @@ h1 {
   /*position: absolute;*/
   /*right: 0;*/
   /*bottom: 0;*/
-  /*width: 30px;*/
-  height: 50px;
+  width: 70px;
+  height: 70px;
+  margin: -20px;
   /*opacity: 50%;*/
 }
 </style>

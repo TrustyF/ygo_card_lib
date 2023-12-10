@@ -5,7 +5,6 @@ let props = defineProps(["card"]);
 const curr_api = inject("curr_api");
 const debug_mode = inject("debug_mode");
 const card_size = inject("card_size");
-const card_storages = inject("card_storages");
 
 const card_width = computed(() => String(card_size.value[0]) + 'px')
 
@@ -16,6 +15,7 @@ const card_width = computed(() => String(card_size.value[0]) + 'px')
     <h1>{{ card['name'] }}</h1>
 
     <h2>{{ card['code'] }}</h2>
+    <h2>{{ card['rarity'] }}</h2>
 
     <div class="code_and_rarity">
       <h3 v-if="card['sell_price']">{{ card['sell_price'] + "$" }}</h3>
@@ -23,9 +23,9 @@ const card_width = computed(() => String(card_size.value[0]) + 'px')
     </div>
 
     <div v-if="debug_mode">
-      <h1 style="font-size: 0.5em">{{card['updated_at']}}</h1>
-      <h1 style="font-size: 0.5em">{{card['storage_name']}}</h1>
-      <h1 style="font-size: 0.5em">{{card['archetype'] === null ? 'none' : card['archetype']}}</h1>
+      <h1 style="font-size: 0.5em">{{ card['updated_at'] }}</h1>
+      <h1 style="font-size: 0.5em">{{ card['storage_name'] }}</h1>
+      <h1 style="font-size: 0.5em">{{ card['archetype'] === null ? 'none' : card['archetype'] }}</h1>
     </div>
   </div>
 </template>
@@ -65,13 +65,16 @@ h3 {
   font-size: 1em;
   font-weight: bold;
 }
+
 @media only screen and (max-width: 400px) {
   h1 {
     font-size: 0.5em;
   }
+
   h2 {
     font-size: 0.4em;
   }
+
   h3 {
     font-size: 0.5em;
   }

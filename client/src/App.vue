@@ -10,33 +10,19 @@ let card_size = computed(() => [168 / card_scaling.value, 246 / card_scaling.val
 
 let is_card_updated = ref(false)
 let is_card_editing = ref(true)
-const card_storages = ref([])
-let load_card_storages_status = ref("none")
+const card_storages = [
+  {"name": "Grey_trade_binder", "id": 10},
+  {"name": "Red_deck_box", "id": 1},
+  {"name": "Black_deck_box", "id": 2},
+  {"name": "Large_black_deck_box", "id": 3},
+  {"name": "Dark_side_of_dimensions_deck_box", "id": 4},
+  {"name": "Yugi_Muto_&_Yami_Yugi_Mega-Tin", "id": 6}
+];
 
 provide("card_size", card_size);
 provide('is_card_updated', is_card_updated)
 provide('card_storages', card_storages)
 provide('is_card_editing', is_card_editing)
-
-function load_card_storages() {
-  load_card_storages_status.value = "loading"
-  const url = new URL(`${curr_api}/storage/get_all`)
-
-  fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        card_storages.value = data
-        load_card_storages_status.value = "loaded"
-      })
-      .catch(error => {
-        load_card_storages_status.value = "failed"
-      });
-}
-
-function wake_up_ping() {
-  const url = new URL(`${curr_api}/`)
-  fetch(url)
-}
 
 function scale_card_to_width() {
   console.log(window.innerWidth)
@@ -47,8 +33,6 @@ function scale_card_to_width() {
 
 onMounted(() => {
   scale_card_to_width()
-  wake_up_ping()
-  load_card_storages()
 })
 
 </script>
@@ -56,7 +40,6 @@ onMounted(() => {
 <template>
   <nav-bar-main></nav-bar-main>
   <div class="main_wrapper">
-    <page-loading :status="load_card_storages_status"></page-loading>
     <RouterView/>
   </div>
 

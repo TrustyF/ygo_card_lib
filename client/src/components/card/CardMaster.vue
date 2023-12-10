@@ -24,7 +24,7 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
     <edit-buttons :card="card" v-if="is_card_editing && debug_mode"></edit-buttons>
 
     <div class="card_body">
-<!--      <card-storage :card="card"></card-storage>-->
+      <card-storage v-if="!debug_mode" :card="card"></card-storage>
       <card-image :card="card"></card-image>
       <card-badges :card="card"></card-badges>
     </div>

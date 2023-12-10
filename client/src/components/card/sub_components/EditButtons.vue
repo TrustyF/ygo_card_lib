@@ -100,7 +100,7 @@ function toggle_option(option) {
             <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;  font-size: 0.6em;
 align-items: center;">
               {{ storage['name'].replace(/_/g, ' ') }}
-              <img :src="`${curr_api}/storage/get_image?id=${storage['id']}`" style="height: 25px;margin-left: 10px">
+              <img :src="`src/assets/images_storage/${storage['name']}_thumbnail.png`" alt="storage_image" style="height: 25px;margin-left: 10px">
             </button>
           </div>
         </div>
@@ -143,7 +143,7 @@ align-items: center;">
   /*outline: 1px solid red;*/
   width: v-bind(card_width);
   height: v-bind(card_height);
-  z-index: 20;
+  z-index: 1;
 
   cursor: pointer;
 }
@@ -155,7 +155,7 @@ align-items: center;">
   flex-flow: row wrap;
   /*gap: 2px;*/
   /*outline: 1px solid red;*/
-  z-index: 100;
+  z-index: 2;
 
   /*overflow-y: scroll;*/
   /*scrollbar-width:none;*/

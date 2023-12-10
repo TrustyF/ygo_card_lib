@@ -23,7 +23,7 @@ function emit_close() {
 
 <template>
   <div class="header_wrapper">
-    <img alt="storage_image" class="storage_image" :src="`${curr_api}/storage/get_image?id=${storage['id']}`">
+    <img alt="storage_image" class="storage_image" :src="`src/assets/images_storage/${storage['name']}_thumbnail.png`">
     <h1 class="storage_name">{{ storage['name'].replace(/_/g, ' ') }}</h1>
     <img alt="collapse_button" ref="collapse_elem" class="collapse_button" :src="collapse_arrow" @click="emit_close()">
   </div>

@@ -10,7 +10,7 @@ const card_storages = inject("card_storages");
 </script>
 
 <template>
-  <div v-for="storage in card_storages" :key="storage['id']">
+  <div v-for="storage in card_storages" :key="storage">
     <card-list-master :storage="storage"></card-list-master>
   </div>
 </template>
