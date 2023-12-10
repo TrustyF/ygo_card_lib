@@ -5,6 +5,7 @@ import NavBarMain from "./components/navbar/NavBarMain.vue";
 import PageLoading from "./components/generic/PageLoading.vue";
 
 const curr_api = inject("curr_api");
+const debug_mode = inject("debug_mode");
 let card_scaling = ref(1.9)
 let card_size = computed(() => [168 / card_scaling.value, 246 / card_scaling.value])
 
@@ -39,6 +40,7 @@ onMounted(() => {
 
 <template>
   <nav-bar-main></nav-bar-main>
+  <p style="position:absolute;z-index: 100;right: 0" v-if="debug_mode">Using {{curr_api}}</p>
   <div class="main_wrapper">
     <RouterView/>
   </div>

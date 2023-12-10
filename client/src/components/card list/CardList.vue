@@ -149,7 +149,12 @@ watch(is_card_updated, (newV, oldV) => {
   console.log('test triggered')
   if (newV === true) {
     console.log('card updated, cardList', newV, oldV)
-    refresh_cards()
+
+    if (search_text.value === ''){
+      refresh_cards()
+    } else {
+      search_card(search_text.value)
+    }
     is_card_updated.value = false
   }
 })
