@@ -89,15 +89,15 @@ onMounted(() => {
       </div>
     </div>
 
+    <div class="card_search">
+      <input v-model="card_name" placeholder="card name" @click="$event.target.select()" @keydown.enter="find_by_name($event.target.value)">
+    </div>
+
     <div class="card_previews">
       <div v-for="card in cards_preview" :key="card['card_template_id']">
         <card-master :card="card"></card-master>
         <button @click="add_card(card['card_template_id'])">add</button>
       </div>
-    </div>
-
-    <div class="card_search">
-      <input v-model="card_name" placeholder="card name" @keydown.enter="find_by_name($event.target.value)">
     </div>
 
   </div>
