@@ -24,7 +24,7 @@ const card_width = computed(() => String(card_size.value[0]) + 'px')
 
     <div v-if="debug_mode">
       <h1 style="font-size: 0.5em">{{ card['updated_at'] }}</h1>
-      <img alt="storage_image" :src="`src/assets/images_storage/${card['storage_name']}_thumbnail.png`" style="width: 30px;margin: -10px">
+      <img alt="storage_image" :src="`/images_storage/${card['storage_name']}_thumbnail.png`" style="width: 30px;margin: -10px">
       <h1 style="font-size: 0.5em">{{ card['archetype'] === null ? 'none' : card['archetype'] }}</h1>
     </div>
   </div>

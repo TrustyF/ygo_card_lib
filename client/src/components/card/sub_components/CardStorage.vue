@@ -15,7 +15,7 @@ const visible = ref(false)
 <template>
   <div class="hit_box" @click="visible = !visible"></div>
   <div :class="visible ? 'storage visible' : 'storage'" v-if="card['storage_name']!==null">
-    <img :src="`src/assets/images_storage/${card['storage_name']}_thumbnail.png`" alt="storage_img" class="storage_image">
+    <img :src="`/images_storage/${card['storage_name']}_thumbnail.png`" loading="lazy" alt="storage_img" class="storage_image">
     <h1>{{ card['storage_name'].replace(/_/g, ' ') }}</h1>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed} from "vue";
-import collapse_arrow from '/src/assets/ui/collapse_arrow.png'
+import collapse_arrow from '/ui/collapse_arrow.png'
 
 let props = defineProps(["storage"]);
 let emits = defineEmits(["collapsed"]);
@@ -23,7 +23,7 @@ function emit_close() {
 
 <template>
   <div class="header_wrapper">
-    <img alt="storage_image" class="storage_image" :src="`src/assets/images_storage/${storage['name']}_thumbnail.png`">
+    <img alt="storage_image" class="storage_image" loading="lazy" :src="`/images_storage/${storage['name']}_thumbnail.png`">
     <h1 class="storage_name">{{ storage['name'].replace(/_/g, ' ') }}</h1>
     <img alt="collapse_button" ref="collapse_elem" class="collapse_button" :src="collapse_arrow" @click="emit_close()">
   </div>

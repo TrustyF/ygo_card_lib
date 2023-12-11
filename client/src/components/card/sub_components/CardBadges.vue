@@ -17,9 +17,9 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 <!--    <img style="margin: -10px;max-width: 50px;object-fit: contain" :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" alt="banned">-->
     <div class="badge cyan" v-if="card['amount']>1"> {{ card['amount'] }}</div>
 
-    <img v-if="card['ban_tcg']==='Banned' && is_card_editing" src="/src/assets/cards/banned.png" alt="banned">
-    <img v-if="card['ban_tcg']==='Limited' && is_card_editing" src="/src/assets/cards/limited.png" alt="banned">
-    <img v-if="card['ban_tcg']==='Semi-Limited' && is_card_editing" src="/src/assets/cards/semi_limited.png" alt="banned">
+    <img v-if="card['ban_tcg']==='Banned' && is_card_editing" src="/cards/banned.png" alt="banned">
+    <img v-if="card['ban_tcg']==='Limited' && is_card_editing" src="/cards/limited.png" alt="banned">
+    <img v-if="card['ban_tcg']==='Semi-Limited' && is_card_editing" src="/cards/semi_limited.png" alt="banned">
 
     <div class="badge yellow" v-if="card['is_staple']!==false && is_card_editing">!</div>
 

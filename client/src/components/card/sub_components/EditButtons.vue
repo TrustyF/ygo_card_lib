@@ -100,7 +100,7 @@ function toggle_option(option) {
             <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;  font-size: 0.6em;
 align-items: center;">
               {{ storage['name'].replace(/_/g, ' ') }}
-              <img :src="`src/assets/images_storage/${storage['name']}_thumbnail.png`" alt="storage_image" style="height: 25px;margin-left: 10px">
+              <img :src="`/images_storage/${storage['name']}_thumbnail.png`" alt="storage_image" style="height: 25px;margin-left: 10px">
             </button>
           </div>
         </div>

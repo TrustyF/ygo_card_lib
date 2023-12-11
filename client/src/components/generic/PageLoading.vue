@@ -4,8 +4,8 @@ import {inject, onMounted, watch, ref, computed} from "vue";
 let props = defineProps(["status"]);
 const curr_api = inject("curr_api");
 
-import spinner_loader from "/src/assets/ui/Loading_icon.gif"
-import failed_loader from "/src/assets/ui/connecterror.png"
+import spinner_loader from "/ui/Loading_icon.gif"
+import failed_loader from "/ui/connecterror.png"
 
 </script>
 
