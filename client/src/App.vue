@@ -19,11 +19,13 @@ const card_storages = [
   {"name": "Dark_side_of_dimensions_deck_box", "id": 4},
   {"name": "Yugi_Muto_&_Yami_Yugi_Mega-Tin", "id": 6}
 ];
+let cards_selling = ref([])
 
 provide("card_size", card_size);
 provide('is_card_updated', is_card_updated)
 provide('card_storages', card_storages)
 provide('is_card_editing', is_card_editing)
+provide('cards_selling', cards_selling)
 
 function scale_card_to_width() {
   console.log(window.innerWidth)

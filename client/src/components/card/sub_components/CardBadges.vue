@@ -15,13 +15,14 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
   <div class="wrapper" v-if="card['card_id']!==null">
 
 <!--    <img style="margin: -10px;max-width: 50px;object-fit: contain" :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" alt="banned">-->
+    <div class="badge red" v-if="card['is_sold']">0</div>
     <div class="badge cyan" v-if="card['amount']>1"> {{ card['amount'] }}</div>
 
     <img v-if="card['ban_tcg']==='Banned' && is_card_editing" src="/cards/banned.png" alt="banned">
     <img v-if="card['ban_tcg']==='Limited' && is_card_editing" src="/cards/limited.png" alt="banned">
     <img v-if="card['ban_tcg']==='Semi-Limited' && is_card_editing" src="/cards/semi_limited.png" alt="banned">
 
-    <div class="badge yellow" v-if="card['is_staple']!==false && is_card_editing">!</div>
+    <div class="badge yellow" v-if="card['is_staple'] && is_card_editing">!</div>
 
 <!--    <div class="badge red" style="font-size: 0.7em" v-if="card['rarity_code']!=='(C)'">{{ card['rarity_code'].replace('(','').replace(')','') }}</div>-->
 
@@ -38,11 +39,12 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
   display: flex;
   flex-flow: column nowrap;
   position: absolute;
-  right: -10px;
-  top: -10px;
-  gap: 5px;
+  right: -0.5em;
+  top: -0.5em;
+  gap: 2px;
 
   width: 20px;
+  z-index: 10;
 }
 
 .tag_wrapper {
@@ -80,16 +82,14 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 }
 
 .badge {
-  /*width: 25px;*/
   height: 20px;
-
   border-radius: 50%;
 
   color: white;
   font-family: Carlito, sans-serif;
   font-size: 1em;
   font-weight: bold;
-  text-shadow: 1px 1px 2px black, 0 0 3px black;
+  text-shadow: 0 0 1px black, 0 0 2px black, 0 0 4px black, 0 0 2px black;
 
   display: flex;
   justify-content: center;
@@ -126,8 +126,14 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 }
 
 @media only screen and (max-width: 400px) {
+  .wrapper{
+    width: 15px;
+    right: -0.35em;
+    top: -0.5em;
+  }
   .badge {
     font-size: 0.7em;
+    height: 15px;
   }
   .tag {
     font-size: 0.3em;

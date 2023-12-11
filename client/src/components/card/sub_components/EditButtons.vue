@@ -16,7 +16,7 @@ const card_languages = ["French", "null"]
 const card_damages = ["Light played", "Played", "Poor", "Damaged", "null"]
 
 function delete_card(card_id) {
-  console.log('delete',card_id)
+  console.log('delete', card_id)
   const url = new URL(`${curr_api}/card/delete`)
   url.searchParams.set('id', String(card_id))
   fetch(url)
@@ -24,10 +24,12 @@ function delete_card(card_id) {
         is_card_updated.value = true
       })
 }
-function add_card(card_id){
-  console.log('add',card_id)
-  const url = new URL(`${curr_api}/card/add`)
+
+function clear_sold(card_id) {
+  const url = new URL(`${curr_api}/card/mark_sold`)
   url.searchParams.set('id', String(card_id))
+  url.searchParams.set('value', String(0))
+
   fetch(url)
       .then(() => {
         is_card_updated.value = true
@@ -65,16 +67,13 @@ function toggle_option(option) {
 
   <div class="buttons_wrapper" v-if="visible">
 
-    <div>
-      <button class="main_list_button" @click="delete_card(card['user_card_id'])">x</button>
-    </div>
+
+    <div class="main_list_button" @click="delete_card(card['user_card_id'])">x</div>
+    <div class="main_list_button" @click="clear_sold(card['card_id'])">0x</div>
+
 
     <div>
-      <button class="main_list_button" @click="add_card(card['card_template_id'])">Add</button>
-    </div>
-
-    <div>
-      <button class="main_list_button" @click="toggle_option(`card_id_list${card['user_card_id']}`)">Set</button>
+      <div class="main_list_button" @click="toggle_option(`card_id_list${card['user_card_id']}`)">Set</div>
       <div class="category">
         <div :id="`card_id_list${card['user_card_id']}`"
              :class="card['card_id']===null ? 'collapsable open': 'collapsable'">
@@ -93,14 +92,15 @@ function toggle_option(option) {
     </div>
 
     <div>
-      <button class="main_list_button" @click="toggle_option(`storage_id_list${card['user_card_id']}`)">Storage</button>
+      <div class="main_list_button" @click="toggle_option(`storage_id_list${card['user_card_id']}`)">Storage</div>
       <div class="category">
         <div :id="`storage_id_list${card['user_card_id']}`" class="collapsable">
           <div class="storage_button" v-for="storage in card_storages" :key="storage['id']+card['user_card_id']">
             <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;  font-size: 0.6em;
 align-items: center;">
               {{ storage['name'].replace(/_/g, ' ') }}
-              <img :src="`/images_storage/${storage['name']}_thumbnail.png`" alt="storage_image" style="height: 25px;margin-left: 10px">
+              <img :src="`/images_storage/${storage['name']}_thumbnail.png`" alt="storage_image"
+                   style="height: 25px;margin-left: 10px">
             </button>
           </div>
         </div>
@@ -108,8 +108,8 @@ align-items: center;">
     </div>
 
     <div>
-      <button class="main_list_button" @click="toggle_option(`card_language_list${card['user_card_id']}`)">Language
-      </button>
+      <div class="main_list_button" @click="toggle_option(`card_language_list${card['user_card_id']}`)">Language
+      </div>
       <div class="category">
         <div :id="`card_language_list${card['user_card_id']}`" class="collapsable">
           <div class="language_button" v-for="lang in card_languages" :key="lang+card['user_card_id']">
@@ -122,7 +122,7 @@ align-items: center;">
     </div>
 
     <div>
-      <button class="main_list_button" @click="toggle_option(`card_damage_list${card['user_card_id']}`)">Damage</button>
+      <div class="main_list_button" @click="toggle_option(`card_damage_list${card['user_card_id']}`)">Damage</div>
       <div class="category">
         <div :id="`card_damage_list${card['user_card_id']}`" class="collapsable">
           <div class="damage_button" v-for="damage in card_damages" :key="damage+card['user_card_id']">
@@ -147,18 +147,19 @@ align-items: center;">
 
   cursor: pointer;
 }
+
 .buttons_wrapper {
   max-width: v-bind(card_width);
   max-height: v-bind(card_height);
+
   position: absolute;
   display: flex;
   flex-flow: row wrap;
-  /*gap: 2px;*/
-  /*outline: 1px solid red;*/
-  z-index: 2;
 
-  /*overflow-y: scroll;*/
-  /*scrollbar-width:none;*/
+  cursor: pointer;
+  user-select: none;
+
+  z-index: 2;
 }
 
 .main_list_button {

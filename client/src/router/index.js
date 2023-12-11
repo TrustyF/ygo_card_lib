@@ -23,6 +23,11 @@ const router = createRouter({
             name: 'add_cards',
             component: () => import('../pages/AddCardPage.vue')
         },
+        {
+            path: '/sell_cards',
+            name: 'sell_cards',
+            component: () => import('../pages/SellCardsPage.vue')
+        },
     ]
 })
 
