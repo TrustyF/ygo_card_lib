@@ -42,7 +42,7 @@ onMounted(() => {
 
 <template>
   <nav-bar-main></nav-bar-main>
-  <p style="position:absolute;z-index: 100;right: 0" v-if="debug_mode">Using {{curr_api}}</p>
+  <p style="position:absolute;z-index: 100;right: 300px" v-if="debug_mode">Using {{curr_api}}</p>
   <div class="main_wrapper">
     <RouterView/>
   </div>
