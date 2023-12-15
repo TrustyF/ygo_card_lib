@@ -6,7 +6,7 @@ import PageLoading from "./components/generic/PageLoading.vue";
 
 const curr_api = inject("curr_api");
 const debug_mode = inject("debug_mode");
-let card_scaling = ref(1.9)
+let card_scaling = ref(1.6)
 let card_size = computed(() => [168 / card_scaling.value, 246 / card_scaling.value])
 
 let is_card_updated = ref(false)

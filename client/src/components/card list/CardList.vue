@@ -24,7 +24,7 @@ let card_list_container = ref()
 let search_box_container = ref(null)
 let search_text = ref('')
 
-let pageLoading = ref(false)
+let pageLoading = ref(true)
 
 function group_same_cards(array) {
   let out = []
@@ -121,6 +121,7 @@ function search_card(text) {
 }
 
 const handleInfiniteScroll = () => {
+  if (pageLoading.value) return;
   let container = card_list_container.value
   if (container === null) return;
 
@@ -164,6 +165,7 @@ watch(is_card_updated, (newV, oldV) => {
 <template>
 
   <page-loading :status="get_all_cards_status"></page-loading>
+  <p>{{pageLoading}}</p>
   <div class="card_list_wrapper" ref="card_list_container">
 
     <div class="filters">

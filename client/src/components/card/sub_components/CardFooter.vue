@@ -37,6 +37,7 @@ function add_card_to_selling() {
 
     <div class="code_and_rarity">
       <h3 v-if="card['price']">{{ "$" + parse_price(card['price']) }}</h3>
+      <h3 v-if="card['price'] && debug_mode" style="font-size: 0.6em">{{ (card['price']) }}</h3>
     </div>
 
     <div v-if="debug_mode">

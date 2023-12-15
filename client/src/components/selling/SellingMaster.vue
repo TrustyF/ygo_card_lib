@@ -2,13 +2,13 @@
 import {inject, onMounted, watch, ref, computed} from "vue";
 import CardMaster from "../card/CardMaster.vue";
 
-let props = defineProps(["test"]);
+let props = defineProps(["cards"]);
 let emits = defineEmits(["test"]);
 
 const curr_api = inject("curr_api");
-const cards_selling = inject("cards_selling");
+let cards_selling = computed(() => props['cards']);
 
-let total_price = computed(() => Math.round((cards_selling.value.reduce((a, b) => a + (b['price'] * b['amount']), 0) * 1.36) * 100) / 100)
+let total_price = Math.round((cards_selling.value.reduce((a, b) => a + (b['price'] * b['amount']), 0) * 1.36) * 100) / 100
 
 function clear_card(index) {
   cards_selling.value.splice(index, 1)
@@ -35,13 +35,13 @@ function mark_sold(value) {
 
 <template>
   <div>
+    <p>{{cards_selling}}</p>
     <div class="header_wrapper">
 
       <!--      <h1 class="storage_name">Selling</h1>-->
       <h2>{{ 'Total $' + total_price }}</h2>
 
       <div class="separator_bar"></div>
-      <button class="button" @click="cards_selling=[]">Clear all</button>
 
       <div class="list">
         <div class="list_element" v-for="(card,i) in cards_selling" :key="card['id']">
@@ -52,6 +52,7 @@ function mark_sold(value) {
         </div>
       </div>
 
+      <button class="button" @click="cards_selling=[]">Clear all</button>
       <button class="button" @click="mark_sold(1)">Mark as sold</button>
 
     </div>
@@ -85,7 +86,7 @@ function mark_sold(value) {
 
 .list {
   width: 90%;
-  height: 100%;
+  min-height: 700px;
   margin: 10px auto 10px auto;
   /*outline: 1px solid red;*/
 

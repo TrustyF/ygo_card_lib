@@ -32,7 +32,7 @@ const cards_selling = inject("cards_selling");
   top: 54px;
   width: 80px;
   height: 50px;
-  z-index: 10;
+  z-index: 50;
 
   transition: 300ms ease-in-out;
 }
@@ -54,7 +54,9 @@ const cards_selling = inject("cards_selling");
   height: 50%;
   filter: invert();
 }
-
+a {
+  text-decoration: none;
+}
 .amount {
   font-family: Caladea sans-serif;
   font-size: 1.5em;
