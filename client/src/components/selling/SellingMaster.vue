@@ -41,7 +41,7 @@ function mark_sold(value) {
       <h2>{{ 'Total $' + total_price }}</h2>
 
       <div class="separator_bar"></div>
-
+      <button class="button" @click="cards_selling=[]">Clear all</button>
 
       <div class="list">
         <div class="list_element" v-for="(card,i) in cards_selling" :key="card['id']">

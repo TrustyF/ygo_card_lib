@@ -12,55 +12,61 @@ const cards_selling = inject("cards_selling");
 </script>
 
 <template>
-  <div class="floater_wrapper">
-    <div class="store_button">
+  <div :class="cards_selling.length > 0 ? 'floater_wrapper active' : 'floater_wrapper'">
+    <router-link to="/sell_cards" class="store_button">
+      <h1 class="amount">{{ cards_selling.length }}</h1>
       <img :src="store_image" alt="store_img" class="store_image">
-    </div>
-    <h1 class="amount">{{cards_selling.length}}</h1>
+    </router-link>
   </div>
 </template>
 
 <style scoped>
-.floater_wrapper{
+.floater_wrapper {
   cursor: pointer;
   position: fixed;
-  background-color: dimgrey;
+  background-color: #4b4b4b;
   border: solid 3px white;
-  border-radius: 50%;
-  right: 10px;
+  /*border-radius: 50%;*/
+  border-radius: 20px 0 0 20px;
+  right: -100px;
   top: 54px;
-  width: 50px;
+  width: 80px;
   height: 50px;
   z-index: 10;
+
+  transition: 300ms ease-in-out;
 }
-.store_button{
+.active {
+  right: -10px;
+}
+
+.store_button {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   gap: 5px;
+  margin-left: 15px;
 }
+
 .store_image {
-  width: 50%;
+  height: 50%;
   filter: invert();
 }
+
 .amount {
   font-family: Caladea sans-serif;
-  font-size: 1.2em;
-  position: absolute;
-  line-height: 1em;
-  left: -10px;
-  top: -10px;
-  background-color: red;
-  padding: 12px;
-  border-radius: 50%;
-  width: 10px;
-  height: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: 1.5em;
+  /*line-height: 1em;*/
+  /*padding: 12px;*/
+  /*border-radius: 50%;*/
+  /*width: 5px;*/
+  /*height: 5px;*/
+  /*display: flex;*/
+  /*justify-content: center;*/
+  /*align-items: center;*/
   color: white;
-  text-shadow: 0 0 1px black, 0 0 2px black, 0 0 4px black, 0 0 2px black;
+  /*text-shadow: 0 0 1px black, 0 0 2px black, 0 0 4px black, 0 0 2px black;*/
 }
 </style>
