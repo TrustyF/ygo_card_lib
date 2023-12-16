@@ -5,7 +5,6 @@ let props = defineProps(["card"]);
 const curr_api = inject("curr_api");
 const debug_mode = inject("debug_mode");
 const card_size = inject("card_size");
-const cards_selling = inject("cards_selling");
 
 const card_width = computed(() => String(card_size.value[0]) + 'px')
 
@@ -14,22 +13,10 @@ function parse_price(price) {
   return Math.round((parseFloat(price) * 1.36) * 100) / 100
 }
 
-function add_card_to_selling() {
-  let temp_card = computed(() => JSON.parse(JSON.stringify(props['card'])))
-  temp_card.value['amount'] = 1
-
-  //check presence
-  if (cards_selling.value.map((x) => x['card_id']).includes(temp_card.value['card_id'])) {
-    console.log('dupe found, not adding')
-  } else {
-    cards_selling.value.push(temp_card.value)
-    console.log(cards_selling.value)
-  }
-}
 </script>
 
 <template>
-  <div class="footer" v-if="card['card_id']!==null" @click="add_card_to_selling()">
+  <div class="footer" v-if="card['card_id']!==null">
     <h1>{{ card['name'] }}</h1>
 
     <h2>{{ card['code'] }}</h2>

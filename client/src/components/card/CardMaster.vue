@@ -28,7 +28,6 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
       <card-image :card="card"></card-image>
       <card-badges :card="card"></card-badges>
     </div>
-
     <card-footer :card="card"></card-footer>
   </div>
 
