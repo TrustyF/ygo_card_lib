@@ -1,7 +1,6 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed} from "vue";
 import CardListMaster from "../components/card list/CardListStorageHeader.vue";
-import SellingFloater from "../components/selling/SellingFloater.vue";
 
 
 // let props = defineProps(["test"]);
@@ -12,7 +11,6 @@ const card_storages = inject("card_storages");
 
 <template>
   <div v-for="storage in card_storages" :key="storage">
-    <selling-floater></selling-floater>
     <card-list-master :storage="storage"></card-list-master>
   </div>
 </template>

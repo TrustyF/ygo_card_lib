@@ -25,10 +25,8 @@ function highlight_button(elem) {
 <template>
 
   <p>Filters:</p>
-  <button class="button highlight" @click="highlight_button($event);emits('filter','none')">Price</button>
-  <button class="button" @click="highlight_button($event);emits('filter','card_type')">Type</button>
-  <button class="button" @click="highlight_button($event);emits('filter','card_archetype')">Archetype</button>
-  <button class="button" @click="highlight_button($event);emits('filter','new_first')">New</button>
+  <button class="button highlight" @click="highlight_button($event);emits('filter','price')">Price</button>
+  <button class="button" @click="highlight_button($event);emits('filter','new')">New</button>
   <button class="button" v-if="debug_mode" @click="highlight_button($event);emits('filter','updated')">updated</button>
 
 </template>

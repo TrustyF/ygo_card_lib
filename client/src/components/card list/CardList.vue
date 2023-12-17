@@ -4,7 +4,6 @@ import CardMaster from "../card/CardMaster.vue";
 import PageLoading from "../../components/generic/PageLoading.vue";
 import ListSearch from "./sub_components/ListSearch.vue";
 import ListFilters from "./sub_components/ListFilters.vue";
-import {request_card_by_name, request_cards} from "../requests.js"
 
 let props = defineProps(["card_limit", "card_order", "storage"]);
 const curr_api = inject("curr_api");
@@ -13,9 +12,12 @@ const debug_mode = inject("debug_mode");
 const is_card_updated = inject("is_card_updated");
 const is_card_editing = inject("is_card_editing");
 const card_width = computed(() => String(card_size.value[0]) + 'px')
-const card_order = ref(String(props['card_order']))
-const card_limit = ref(String(props['card_limit']))
-const card_storage = computed(() => String(props['storage']['id']))
+const card_order = ref(props['card_order'] !== undefined ? props['card_order'] : 'price')
+const card_limit = ref(props['card_limit'])
+const card_storage = computed(() => {
+  if (props['storage'] !== undefined) return props['storage']['id']
+  else return undefined
+})
 let user_cards = ref([])
 let page = ref(0)
 let pageFullLoaded = ref(false)
@@ -59,44 +61,37 @@ function group_same_cards(array) {
 }
 
 // override user cards with requested cards
-async function get_cards() {
+async function get_cards(concat) {
   console.log('getting cards')
-  await request_cards({limit: card_limit.value, order: card_order.value, page: page.value, storage: card_storage.value})
-      .then(result => {
-        if (debug_mode) console.log(result)
-        user_cards.value = group_same_cards(result)
 
-        if (result.length < 1) pageFullLoaded.value = true
-        pageLoading.value = false
-        get_all_cards_status.value = "loaded"
-      })
-}
+  const url = new URL(`${curr_api}/card/get`)
 
-// add requested cards to list of cards
-function concat_cards() {
-  request_cards({limit: card_limit.value, order: card_order.value, page: page.value, storage: card_storage.value})
-      .then(result => {
-        let newData
-        newData = user_cards.value.concat(result)
-        user_cards.value = group_same_cards(newData)
+  if (search_text.value !== undefined || search_text.value === "") url.searchParams.set('search', search_text.value)
+  if (card_limit.value !== undefined) url.searchParams.set('card_limit', String(card_limit.value))
+  if (page.value !== undefined) url.searchParams.set('card_page', String(page.value))
+  if (card_order.value !== undefined) url.searchParams.set('ordering', String(card_order.value))
+  if (card_storage.value !== undefined) url.searchParams.set('storage', String(card_storage.value))
 
-        if (result.length < 1) pageFullLoaded.value = true
-        pageLoading.value = false
-        get_all_cards_status.value = "loaded"
-      })
+  const result = await fetch(url).then(response => response.json())
+
+  if (concat) {
+    let newData
+    newData = user_cards.value.concat(result)
+    user_cards.value = group_same_cards(newData)
+  } else {
+    user_cards.value = group_same_cards(result)
+  }
+
+  if (result.length < 1) pageFullLoaded.value = true
+  pageLoading.value = false
+  get_all_cards_status.value = "loaded"
+
+  if (debug_mode) console.log(result)
 }
 
 function apply_filter(filter) {
   card_order.value = filter
-  reload_cards()
-}
-
-function reload_cards() {
-  // get_all_cards_status.value = "loading"
-  // card_limit.value = '50'
-  page.value = 0
-  pageFullLoaded.value = false
-  get_cards()
+  refresh_cards()
 }
 
 function refresh_cards() {
@@ -109,23 +104,27 @@ function refresh_cards() {
 
 function search_card(text) {
   search_text.value = text
-  console.log(search_text.value)
-  if (search_text.value === "" || search_text.value === undefined) {
-    reload_cards()
-    return null
-  }
-
-  request_card_by_name({name: search_text.value, storage: card_storage})
-      .then(data => user_cards.value = data
-      )
+  page.value = 0
+  pageFullLoaded.value = false
+  get_cards()
 }
 
 const handleInfiniteScroll = () => {
-  if (pageLoading.value) return;
+  if (pageLoading.value) {
+    console.log('page loading', 'handleInfiniteScroll')
+    return;
+  }
   let container = card_list_container.value
-  if (container === null) return;
+  if (container === null) {
+    return
+  }
 
-  if (search_text.value !== '') return;
+  console.log('is page loaded',pageFullLoaded.value)
+
+  // if (search_text.value !== '') {
+  //   console.log('no search text','handleInfiniteScroll')
+  //   return
+  // }
 
   let container_bot = container.getBoundingClientRect()
 
@@ -135,7 +134,7 @@ const handleInfiniteScroll = () => {
     pageLoading.value = true
     page.value += 1
     console.log('loading more')
-    concat_cards()
+    get_cards(true)
   }
 
 };
@@ -151,7 +150,7 @@ watch(is_card_updated, (newV, oldV) => {
   if (newV === true) {
     console.log('card updated, cardList', newV, oldV)
 
-    if (search_text.value === ''){
+    if (search_text.value === '') {
       refresh_cards()
     } else {
       search_card(search_text.value)
@@ -165,7 +164,7 @@ watch(is_card_updated, (newV, oldV) => {
 <template>
 
   <page-loading :status="get_all_cards_status"></page-loading>
-  <p>{{pageLoading}}</p>
+
   <div class="card_list_wrapper" ref="card_list_container">
 
     <div class="filters">

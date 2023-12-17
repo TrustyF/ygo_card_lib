@@ -1,8 +1,7 @@
 <script setup>
-import {inject, onMounted, watch, ref, computed} from "vue";
+import {inject, onMounted, ref} from "vue";
 import CardMaster from "../components/card/CardMaster.vue";
 import CardList from "../components/card list/CardList.vue";
-import {request_cards} from "../components/requests.js";
 
 let props = defineProps(["test"]);
 let emits = defineEmits(["test"]);
@@ -21,7 +20,7 @@ function find_by_name(text) {
   console.log(text)
 
   const url = new URL(`${curr_api}/card/search_template_by_name`)
-  url.searchParams.set('name', text)
+  url.searchParams.set('search', text)
 
   fetch(url)
       .then(response => response.json())
@@ -35,11 +34,14 @@ function find_by_name(text) {
 
 async function get_new_cards() {
   console.log('getting cards')
-  await request_cards({limit: 5, order: 'new_first', page: 0})
-      .then(result => {
-        console.log(result)
-        cards_new.value = result
-      })
+
+  const url = new URL(`${curr_api}/card/get`)
+
+  url.searchParams.set('card_limit', String(5))
+  url.searchParams.set('card_page', String(0))
+  url.searchParams.set('ordering', String('new'))
+
+  cards_new.value = await fetch(url).then(response => response.json())
 }
 
 function add_card(id) {
@@ -85,7 +87,7 @@ onMounted(() => {
 
     <div class="all_cards_new">
       <div class="size_override">
-        <card-list card_limit="15" card_order="new_first" storage="undefined"></card-list>
+        <card-list card_limit="15" card_order="new" storage="undefined"></card-list>
       </div>
     </div>
 

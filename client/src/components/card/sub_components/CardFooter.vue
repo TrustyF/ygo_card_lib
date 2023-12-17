@@ -17,10 +17,10 @@ function parse_price(price) {
 
 <template>
   <div class="footer" v-if="card['card_id']!==null">
-    <h1>{{ card['name'] }}</h1>
+    <h1 :title="card['name']">{{ card['name'] }}</h1>
 
     <h2>{{ card['code'] }}</h2>
-    <h2>{{ card['rarity'] }}</h2>
+    <h2 :title="card['rarity']">{{ card['rarity'] }}</h2>
 
     <div class="code_and_rarity">
       <h3 v-if="card['price']">{{ "$" + parse_price(card['price']) }}</h3>
@@ -41,7 +41,6 @@ function parse_price(price) {
   position: relative;
   margin-top: 5px;
   width: v-bind(card_width);
-  cursor: pointer;
   /*outline: 1px solid red;*/
 }
 

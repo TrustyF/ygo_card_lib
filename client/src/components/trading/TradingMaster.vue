@@ -20,7 +20,7 @@ function find_by_name(text) {
   console.log(text)
 
   const url = new URL(`${curr_api}/card/search_template_by_name`)
-  url.searchParams.set('name', text)
+  url.searchParams.set('search', text)
   url.searchParams.set('limit', String(5))
 
   fetch(url)

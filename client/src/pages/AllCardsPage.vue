@@ -10,7 +10,7 @@ const card_storages = inject("card_storages");
 </script>
 
 <template>
-  <card-list card_limit="50" storage="none"></card-list>
+  <card-list card_limit="50"></card-list>
 </template>
 
 <style scoped>
