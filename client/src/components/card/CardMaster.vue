@@ -32,7 +32,7 @@ function emit_card() {
     <edit-buttons :card="card" v-if="is_card_editing && debug_mode"></edit-buttons>
 
     <div class="card_body">
-      <card-storage v-if="!debug_mode" :card="card"></card-storage>
+<!--      <card-storage v-if="!debug_mode" :card="card"></card-storage>-->
       <card-image :card="card"></card-image>
       <card-badges :card="card"></card-badges>
     </div>
@@ -44,7 +44,7 @@ function emit_card() {
 <style scoped>
 .card {
   /*outline: 1px solid red;*/
-  margin: 5px;
+  margin-bottom: 10px;
 }
 
 .card_body {

@@ -15,39 +15,36 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 const card_languages = ["French", "null"]
 const card_damages = ["Light played", "Played", "Poor", "Damaged", "null"]
 
-function delete_card(card_id) {
+async function delete_card(card_id) {
   console.log('delete', card_id)
+
   const url = new URL(`${curr_api}/card/delete`)
   url.searchParams.set('id', String(card_id))
-  fetch(url)
-      .then(() => {
-        is_card_updated.value = true
-      })
+
+  const result = await fetch(url)
+  if (result.ok) is_card_updated.value = true
 }
 
-function clear_sold(card_id) {
-  const url = new URL(`${curr_api}/card/mark_sold`)
-  url.searchParams.set('id', String(card_id))
-  url.searchParams.set('value', String(0))
+async function update_card(user_card_id, attr_name, attribute) {
 
-  fetch(url)
-      .then(() => {
-        is_card_updated.value = true
-      })
-}
+  let url
 
-function set_card_attribute(user_card_id, attr_name, attribute) {
-  const url = new URL(`${curr_api}/card/set_card_attrib`)
-  url.searchParams.set('user_card_id', String(user_card_id))
-  url.searchParams.set('attr_name', String(attr_name))
-  url.searchParams.set('attribute', attribute)
+  if (typeof attribute === 'number') {
+    url = new URL(`${curr_api}/card/i_update`)
+  } else {
+    url = new URL(`${curr_api}/card/s_update`)
+  }
 
-  fetch(url)
-      .then(() => {
-        is_card_updated.value = true
-      })
+  url.searchParams.set('id', String(user_card_id))
+  url.searchParams.set('attrib', String(attr_name))
+  url.searchParams.set('value', attribute)
 
-  toggle_option(`${attr_name}_list${user_card_id}`)
+  const result = await fetch(url)
+
+  if (result.ok) {
+    is_card_updated.value = true
+    toggle_option(`${attr_name}_list${user_card_id}`)
+  }
 }
 
 function toggle_option(option) {
@@ -69,7 +66,7 @@ function toggle_option(option) {
 
 
     <div class="main_list_button" @click="delete_card(card['user_card_id'])">x</div>
-    <div class="main_list_button" @click="clear_sold(card['card_id'])">0x</div>
+    <div class="main_list_button" @click="update_card(card['card_id'],'sold',0)">0x</div>
 
 
     <div>
@@ -78,7 +75,7 @@ function toggle_option(option) {
         <div :id="`card_id_list${card['user_card_id']}`"
              :class="card['card_id']===null ? 'collapsable open': 'collapsable'">
           <div class="set_button" v-for="set in card['sets']" :key="set['card_code']+card['user_card_id']">
-            <button @click="set_card_attribute(card['user_card_id'],'card_id',set['card_id'])">
+            <button @click="update_card(card['user_card_id'],'card_id',set['card_id'])">
               {{ `${set['card_code']}` }}
             </button>
             <button v-if="set['card_edition']!=='Unlimited' || set['card_rarity']!=='Common'">
@@ -96,7 +93,7 @@ function toggle_option(option) {
       <div class="category">
         <div :id="`storage_id_list${card['user_card_id']}`" class="collapsable">
           <div class="storage_button" v-for="storage in card_storages" :key="storage['id']+card['user_card_id']">
-            <button @click="set_card_attribute(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;  font-size: 0.6em;
+            <button @click="update_card(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;  font-size: 0.6em;
 align-items: center;">
               {{ storage['name'].replace(/_/g, ' ') }}
               <img :src="`/images_storage/${storage['name']}_thumbnail.png`" alt="storage_image"
@@ -113,7 +110,7 @@ align-items: center;">
       <div class="category">
         <div :id="`card_language_list${card['user_card_id']}`" class="collapsable">
           <div class="language_button" v-for="lang in card_languages" :key="lang+card['user_card_id']">
-            <button @click="set_card_attribute(card['user_card_id'],'card_language',lang)">
+            <button @click="update_card(card['user_card_id'],'card_language',lang)">
               {{ lang }}
             </button>
           </div>
@@ -126,7 +123,7 @@ align-items: center;">
       <div class="category">
         <div :id="`card_damage_list${card['user_card_id']}`" class="collapsable">
           <div class="damage_button" v-for="damage in card_damages" :key="damage+card['user_card_id']">
-            <button @click="set_card_attribute(card['user_card_id'],'card_damage',damage)">
+            <button @click="update_card(card['user_card_id'],'card_damage',damage)">
               {{ damage }}
             </button>
           </div>

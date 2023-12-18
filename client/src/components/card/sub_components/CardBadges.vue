@@ -14,7 +14,7 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 <template>
   <div class="wrapper" v-if="card['card_id']!==null">
 
-<!--    <img style="margin: -10px;max-width: 50px;object-fit: contain" :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" alt="banned">-->
+    <!--    <img style="margin: -10px;max-width: 50px;object-fit: contain" :src="`${curr_api}/storage/get_image?id=${card['storage_id']}`" alt="banned">-->
     <div class="badge red" v-if="card['is_sold']">0</div>
     <div class="badge cyan" v-if="card['amount']>1"> {{ card['amount'] }}</div>
 
@@ -24,7 +24,7 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 
     <div class="badge yellow" v-if="card['is_staple'] && is_card_editing">!</div>
 
-<!--    <div class="badge red" style="font-size: 0.7em" v-if="card['rarity_code']!=='(C)'">{{ card['rarity_code'].replace('(','').replace(')','') }}</div>-->
+    <!--    <div class="badge red" style="font-size: 0.7em" v-if="card['rarity_code']!=='(C)'">{{ card['rarity_code'].replace('(','').replace(')','') }}</div>-->
 
   </div>
 
@@ -126,15 +126,17 @@ const card_height = computed(() => String(card_size.value[1]) + 'px')
 }
 
 @media only screen and (max-width: 400px) {
-  .wrapper{
+  .wrapper {
     width: 15px;
     right: -0.35em;
     top: -0.5em;
   }
+
   .badge {
     font-size: 0.7em;
     height: 15px;
   }
+
   .tag {
     font-size: 0.3em;
   }
