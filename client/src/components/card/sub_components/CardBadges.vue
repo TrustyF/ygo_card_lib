@@ -22,7 +22,7 @@ const card_height = computed(() => String(card_size.value[1] * props['size_multi
     <img v-if="card['ban_tcg']==='Limited' && is_card_editing" src="/cards/limited.png" alt="banned">
     <img v-if="card['ban_tcg']==='Semi-Limited' && is_card_editing" src="/cards/semi_limited.png" alt="banned">
 
-    <div class="badge yellow" v-if="card['is_staple'] && is_card_editing">!</div>
+<!--    <div class="badge yellow" v-if="card['is_staple'] && is_card_editing">!</div>-->
 
     <!--    <div class="badge red" style="font-size: 0.7em" v-if="card['rarity_code']!=='(C)'">{{ card['rarity_code'].replace('(','').replace(')','') }}</div>-->
 

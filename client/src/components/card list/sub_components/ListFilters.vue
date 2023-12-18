@@ -26,6 +26,7 @@ function highlight_button(elem) {
 
   <p>Filters:</p>
   <button class="button highlight" @click="highlight_button($event);emits('filter','price')">Price</button>
+  <button class="button" @click="highlight_button($event);emits('filter','staple')">Staple</button>
   <button class="button" @click="highlight_button($event);emits('filter','new')">New</button>
   <button class="button" v-if="debug_mode" @click="highlight_button($event);emits('filter','updated')">updated</button>
 
