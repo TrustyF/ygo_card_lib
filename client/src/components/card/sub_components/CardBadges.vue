@@ -2,7 +2,6 @@
 import {inject, onMounted, toRefs, watch, ref, computed} from "vue";
 
 let props = defineProps(["card","size_multiplier"]);
-let refs = toRefs(props)
 const is_card_editing = inject("is_card_editing");
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");

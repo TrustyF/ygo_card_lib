@@ -38,7 +38,7 @@ async function update_card(user_card_id, attr_name, attribute) {
 
   url.searchParams.set('id', String(user_card_id))
   url.searchParams.set('attrib', String(attr_name))
-  url.searchParams.set('value', attribute)
+  url.searchParams.set('value', String(attribute))
 
   const result = await fetch(url)
 
@@ -50,6 +50,8 @@ async function update_card(user_card_id, attr_name, attribute) {
 
 function toggle_option(option) {
   let target = document.getElementById(option)
+
+  if (target === null) return
 
   if (target.classList.contains('open')) {
     target.classList.remove('open')
@@ -63,12 +65,14 @@ function toggle_option(option) {
 <template>
   <!--  <div class="hit_box" @click="visible = !visible"></div>-->
   <div style="position: relative;">
-    <button v-if="debug_mode" style="border: 1px solid white;background-color:#282828;border-radius: 50%;width: 12px;height: 12px;position: absolute;z-index: 25;right: -10px" @click="visible = !visible"></button>
+    <button v-if="debug_mode"
+            style="border: 1px solid white;background-color:#282828;border-radius: 50%;width: 12px;height: 12px;position: absolute;z-index: 25;right: -10px;top: 30px"
+            @click="visible = !visible"></button>
 
     <div class="buttons_wrapper" v-if="visible">
 
       <div class="main_list_button" @click="delete_card(card['user_card_id'])">x</div>
-      <div class="main_list_button" @click="update_card(card['card_id'],'sold',0)">0x</div>
+      <div class="main_list_button" @click="update_card(card['user_card_id'],'is_sold',0)">0x</div>
 
 
       <div>

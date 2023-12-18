@@ -41,13 +41,17 @@ function group_same_cards(array) {
         value['card_id'] === card['card_id'] &&
         value['storage_id'] === card['storage_id'] &&
         value['language'] === card['language'] &&
-        value['card_damage'] === card['card_damage']
+        value['card_damage'] === card['card_damage'] &&
+        value['is_sold'] === card['is_sold'] &&
+        value['is_in_use'] === card['is_in_use']
     )
     let existing = out.filter((value) =>
         value['card_id'] === card['card_id'] &&
         value['storage_id'] === card['storage_id'] &&
         value['language'] === card['language'] &&
-        value['card_damage'] === card['card_damage']
+        value['card_damage'] === card['card_damage'] &&
+        value['is_sold'] === card['is_sold'] &&
+        value['is_in_use'] === card['is_in_use']
     )
 
     if (result.length > 1 && existing.length === 0) {
@@ -119,7 +123,7 @@ const handleInfiniteScroll = () => {
     return
   }
 
-  console.log('is page loaded',pageFullLoaded.value)
+  console.log('is page loaded', pageFullLoaded.value)
 
   // if (search_text.value !== '') {
   //   console.log('no search text','handleInfiniteScroll')

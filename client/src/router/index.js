@@ -6,12 +6,17 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: () => import('../pages/HomePage.vue')
+            redirect: '/all_cards'
         },
         {
             path: '/all_cards',
             name: 'all_cards',
             component: () => import('../pages/AllCardsPage.vue')
+        },
+        {
+            path: '/storage_cards',
+            name: 'storage_cards',
+            component: () => import('../pages/StoragePage.vue')
         },
         {
             path: '/scan_card',
