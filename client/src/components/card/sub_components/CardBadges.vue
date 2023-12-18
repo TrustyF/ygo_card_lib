@@ -1,13 +1,14 @@
 <script setup>
 import {inject, onMounted, toRefs, watch, ref, computed} from "vue";
 
-let props = defineProps(["card"]);
+let props = defineProps(["card","size_multiplier"]);
 let refs = toRefs(props)
 const is_card_editing = inject("is_card_editing");
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
-const card_width = computed(() => String(card_size.value[0]) + 'px')
-const card_height = computed(() => String(card_size.value[1]) + 'px')
+
+const card_width = computed(() => String(card_size.value[0] * props['size_multiplier']) + 'px')
+const card_height = computed(() => String(card_size.value[1] * props['size_multiplier']) + 'px')
 
 </script>
 

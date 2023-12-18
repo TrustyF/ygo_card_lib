@@ -19,7 +19,7 @@ let current_card_id = ref(0)
 
 let my_price = computed(() => Math.round((my_cards.value.reduce((a, b) => a + (b['price']), 0) * 1.36) * 100) / 100)
 let trade_price = computed(() => Math.round((trading_cards.value.reduce((a, b) => a + (b['price']), 0) * 1.36) * 100) / 100)
-let price_diff = computed(() =>  Math.round((my_price.value - trade_price.value) * 10)/10)
+let price_diff = computed(() => Math.round((my_price.value - trade_price.value) * 10) / 10)
 
 let my_price_color = computed(() => {
   if (my_price.value > trade_price.value) return 'green'
@@ -65,13 +65,13 @@ async function add_template_to_library_zone(id) {
   my_cards.value.push(result)
 }
 
-function move_to_trade_zone(index) {
-  trading_cards.value.push(my_cards.value[index])
-  my_cards.value.splice(index,1)
+function swap(index,source,target) {
+  target.push(source[index])
+  source.splice(index, 1)
 }
-function move_to_library_zone(index) {
-  my_cards.value.push(trading_cards.value[index])
-  trading_cards.value.splice(index,1)
+
+function clear(index,array){
+  array.splice(index, 1)
 }
 
 </script>
@@ -130,8 +130,9 @@ function move_to_library_zone(index) {
         <div class="card_preview_wrapper">
           <div class="card_preview" style="flex-flow: column nowrap" v-for="(card,i) in my_cards"
                :key="card['card_template_id']">
-            <card-master :card="card"></card-master>
-            <button class="button" @click="move_to_trade_zone(i)">swap</button>
+            <card-master :card="card" :size_multiplier="0.5"></card-master>
+            <button class="button" @click="swap(i,my_cards,trading_cards)">swap</button>
+            <button class="button" @click="clear(i,my_cards)">clear</button>
           </div>
         </div>
 
@@ -140,9 +141,11 @@ function move_to_library_zone(index) {
         <h1>Trading</h1>
 
         <div class="card_preview_wrapper">
-          <div class="card_preview" style="flex-flow: column nowrap" v-for="(card,i) in trading_cards" :key="card['card_template_id']">
-            <card-master :card="card"></card-master>
-            <button class="button" @click="move_to_library_zone(i)">swap</button>
+          <div class="card_preview" style="flex-flow: column nowrap" v-for="(card,i) in trading_cards"
+               :key="card['card_template_id']">
+            <card-master :card="card" :size_multiplier="0.5"></card-master>
+            <button class="button" @click="swap(i,trading_cards,my_cards)">swap</button>
+            <button class="button" @click="clear(i,trading_cards)">clear</button>
           </div>
         </div>
       </div>
@@ -199,9 +202,9 @@ function move_to_library_zone(index) {
   background-color: #4b4b4b;
   color: white;
   border-radius: 5px;
-  padding: 5px;
-  line-height: 1.3em;
-  font-size: 0.7em;
+  /*padding: 0.2em;*/
+  /*line-height: 1.3em;*/
+  font-size: 0.5em;
   border: 2px solid grey;
 }
 
@@ -220,7 +223,7 @@ function move_to_library_zone(index) {
   flex-flow: row wrap;
   justify-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 2px;
 }
 
 .card_sets {
@@ -255,5 +258,11 @@ function move_to_library_zone(index) {
 
 .green {
   color: greenyellow;
+}
+
+@media only screen and (max-width: 400px) {
+  .price {
+    font-size: 0.7em;
+  }
 }
 </style>

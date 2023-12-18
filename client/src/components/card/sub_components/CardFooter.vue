@@ -1,12 +1,13 @@
 <script setup>
 import {inject, onMounted, watch, ref, computed} from "vue";
 
-let props = defineProps(["card"]);
+let props = defineProps(["card","size_multiplier"]);
 const curr_api = inject("curr_api");
 const debug_mode = inject("debug_mode");
 const card_size = inject("card_size");
 
-const card_width = computed(() => String(card_size.value[0]) + 'px')
+const card_width = computed(() => String(card_size.value[0] * props['size_multiplier']) + 'px')
+const card_height = computed(() => String(card_size.value[1] * props['size_multiplier']) + 'px')
 
 function parse_price(price) {
   //convert to cad and round
@@ -24,17 +25,17 @@ function parse_price(price) {
 
     <div class="price">
       <h3 v-if="card['price']">{{ "$" + parse_price(card['price']) }}</h3>
-      <h3 v-if="card['price'] && debug_mode" style="font-size: 0.6em">{{ (card['price']) }}</h3>
+<!--      <h3 v-if="card['price'] && debug_mode" style="font-size: 0.6em">{{ (card['price']) }}</h3>-->
     </div>
 
     <img v-if="card['storage_name']" class="storage_image"
          :src="`/images_storage/${card['storage_name']}_thumbnail.png`" alt="storage">
 
     <div v-if="debug_mode">
-      <h1 style="font-size: 0.5em">{{ card['updated_at'] }}</h1>
+<!--      <h1 style="font-size: 0.5em">{{ card['updated_at'] }}</h1>-->
 <!--      <img alt="storage_image" :src="`/images_storage/${card['storage_name']}_thumbnail.png`"-->
 <!--           style="width: 30px;margin: -10px">-->
-      <h1 style="font-size: 0.5em">{{ card['archetype'] === null ? 'none' : card['archetype'] }}</h1>
+<!--      <h1 style="font-size: 0.5em">{{ card['archetype'] === null ? 'none' : card['archetype'] }}</h1>-->
     </div>
   </div>
 </template>

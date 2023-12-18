@@ -7,6 +7,7 @@ const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const is_card_updated = inject("is_card_updated");
 const card_storages = inject("card_storages");
+const debug_mode = inject("debug_mode");
 
 const visible = ref(false)
 
@@ -60,83 +61,85 @@ function toggle_option(option) {
 </script>
 
 <template>
-  <div class="hit_box" @click="visible = !visible"></div>
+  <!--  <div class="hit_box" @click="visible = !visible"></div>-->
+  <div style="position: relative;">
+    <button v-if="debug_mode" style="border: 1px solid white;background-color:#282828;border-radius: 50%;width: 12px;height: 12px;position: absolute;z-index: 25;right: -10px" @click="visible = !visible"></button>
 
-  <div class="buttons_wrapper" v-if="visible">
+    <div class="buttons_wrapper" v-if="visible">
+
+      <div class="main_list_button" @click="delete_card(card['user_card_id'])">x</div>
+      <div class="main_list_button" @click="update_card(card['card_id'],'sold',0)">0x</div>
 
 
-    <div class="main_list_button" @click="delete_card(card['user_card_id'])">x</div>
-    <div class="main_list_button" @click="update_card(card['card_id'],'sold',0)">0x</div>
-
-
-    <div>
-      <div class="main_list_button" @click="toggle_option(`card_id_list${card['user_card_id']}`)">Set</div>
-      <div class="category">
-        <div :id="`card_id_list${card['user_card_id']}`"
-             :class="card['card_id']===null ? 'collapsable open': 'collapsable'">
-          <div class="set_button" v-for="set in card['sets']" :key="set['card_code']+card['user_card_id']">
-            <button @click="update_card(card['user_card_id'],'card_id',set['card_id'])">
-              {{ `${set['card_code']}` }}
-            </button>
-            <button v-if="set['card_edition']!=='Unlimited' || set['card_rarity']!=='Common'">
-              {{
-                `${set['card_rarity'] !== 'Common' ? set['card_rarity'] : ''} ${set['card_edition']}`
-              }}
-            </button>
+      <div>
+        <div class="main_list_button" @click="toggle_option(`card_id_list${card['user_card_id']}`)">Set</div>
+        <div class="category">
+          <div :id="`card_id_list${card['user_card_id']}`"
+               :class="card['card_id']===null ? 'collapsable open': 'collapsable'">
+            <div class="set_button" v-for="set in card['sets']" :key="set['card_code']+card['user_card_id']">
+              <button @click="update_card(card['user_card_id'],'card_id',set['card_id'])">
+                {{ `${set['card_code']}` }}
+              </button>
+              <button v-if="set['card_edition']!=='Unlimited' || set['card_rarity']!=='Common'">
+                {{
+                  `${set['card_rarity'] !== 'Common' ? set['card_rarity'] : ''} ${set['card_edition']}`
+                }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div>
-      <div class="main_list_button" @click="toggle_option(`storage_id_list${card['user_card_id']}`)">Storage</div>
-      <div class="category">
-        <div :id="`storage_id_list${card['user_card_id']}`" class="collapsable">
-          <div class="storage_button" v-for="storage in card_storages" :key="storage['id']+card['user_card_id']">
-            <button @click="update_card(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;  font-size: 0.6em;
+      <div>
+        <div class="main_list_button" @click="toggle_option(`storage_id_list${card['user_card_id']}`)">Storage</div>
+        <div class="category">
+          <div :id="`storage_id_list${card['user_card_id']}`" class="collapsable">
+            <div class="storage_button" v-for="storage in card_storages" :key="storage['id']+card['user_card_id']">
+              <button @click="update_card(card['user_card_id'],'storage_id',storage['id'])" style="display: flex;  font-size: 0.6em;
 align-items: center;">
-              {{ storage['name'].replace(/_/g, ' ') }}
-              <img :src="`/images_storage/${storage['name']}_thumbnail.png`" alt="storage_image"
-                   style="height: 25px;margin-left: 10px">
-            </button>
+                {{ storage['name'].replace(/_/g, ' ') }}
+                <img :src="`/images_storage/${storage['name']}_thumbnail.png`" alt="storage_image"
+                     style="height: 25px;margin-left: 10px">
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div>
-      <div class="main_list_button" @click="toggle_option(`card_language_list${card['user_card_id']}`)">Language
-      </div>
-      <div class="category">
-        <div :id="`card_language_list${card['user_card_id']}`" class="collapsable">
-          <div class="language_button" v-for="lang in card_languages" :key="lang+card['user_card_id']">
-            <button @click="update_card(card['user_card_id'],'card_language',lang)">
-              {{ lang }}
-            </button>
+      <div>
+        <div class="main_list_button" @click="toggle_option(`card_language_list${card['user_card_id']}`)">Language
+        </div>
+        <div class="category">
+          <div :id="`card_language_list${card['user_card_id']}`" class="collapsable">
+            <div class="language_button" v-for="lang in card_languages" :key="lang+card['user_card_id']">
+              <button @click="update_card(card['user_card_id'],'card_language',lang)">
+                {{ lang }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div>
-      <div class="main_list_button" @click="toggle_option(`card_damage_list${card['user_card_id']}`)">Damage</div>
-      <div class="category">
-        <div :id="`card_damage_list${card['user_card_id']}`" class="collapsable">
-          <div class="damage_button" v-for="damage in card_damages" :key="damage+card['user_card_id']">
-            <button @click="update_card(card['user_card_id'],'card_damage',damage)">
-              {{ damage }}
-            </button>
+      <div>
+        <div class="main_list_button" @click="toggle_option(`card_damage_list${card['user_card_id']}`)">Damage</div>
+        <div class="category">
+          <div :id="`card_damage_list${card['user_card_id']}`" class="collapsable">
+            <div class="damage_button" v-for="damage in card_damages" :key="damage+card['user_card_id']">
+              <button @click="update_card(card['user_card_id'],'card_damage',damage)">
+                {{ damage }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </template>
 
 <style scoped>
 .hit_box {
-  position: absolute;
+  /*position: absolute;*/
   /*outline: 1px solid red;*/
   width: v-bind(card_width);
   height: v-bind(card_height);
@@ -147,16 +150,16 @@ align-items: center;">
 
 .buttons_wrapper {
   max-width: v-bind(card_width);
-  max-height: v-bind(card_height);
+  /*max-height: v-bind(card_height);*/
 
-  position: absolute;
+  position: relative;
   display: flex;
   flex-flow: row wrap;
 
   cursor: pointer;
   user-select: none;
 
-  z-index: 2;
+  z-index: 5;
 }
 
 .main_list_button {
