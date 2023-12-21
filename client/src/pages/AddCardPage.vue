@@ -19,7 +19,7 @@ let card_image = ref()
 function find_by_name(text) {
   console.log(text)
 
-  const url = new URL(`${curr_api}/card/search_template_by_name`)
+  const url = new URL(`${curr_api}/card/get_template`)
   url.searchParams.set('search', text)
 
   fetch(url)

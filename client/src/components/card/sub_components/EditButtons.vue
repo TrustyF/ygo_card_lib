@@ -44,6 +44,7 @@ async function update_card(user_card_id, attr_name, attribute) {
 
   if (result.ok) {
     is_card_updated.value = true
+    console.log('card updated',user_card_id)
     toggle_option(`${attr_name}_list${user_card_id}`)
   }
 }

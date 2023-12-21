@@ -4,6 +4,7 @@ import CardMaster from "../card/CardMaster.vue";
 import PageLoading from "../../components/generic/PageLoading.vue";
 import ListSearch from "./sub_components/ListSearch.vue";
 import ListFilters from "./sub_components/ListFilters.vue";
+import ListOrders from "./sub_components/ListOrders.vue";
 
 let props = defineProps(["card_limit", "card_order", "storage"]);
 const curr_api = inject("curr_api");
@@ -13,6 +14,7 @@ const is_card_updated = inject("is_card_updated");
 const is_card_editing = inject("is_card_editing");
 const card_width = computed(() => String(card_size.value[0]) + 'px')
 const card_order = ref(props['card_order'] !== undefined ? props['card_order'] : 'price')
+const card_filter = ref()
 const card_limit = ref(props['card_limit'])
 const card_storage = computed(() => {
   if (props['storage'] !== undefined) return props['storage']['id']
@@ -74,6 +76,7 @@ async function get_cards(concat) {
   if (card_limit.value !== undefined) url.searchParams.set('card_limit', String(card_limit.value))
   if (page.value !== undefined) url.searchParams.set('card_page', String(page.value))
   if (card_order.value !== undefined) url.searchParams.set('ordering', String(card_order.value))
+  if (card_filter.value !== undefined) url.searchParams.set('filter', String(card_filter.value))
   if (card_storage.value !== undefined) url.searchParams.set('storage', String(card_storage.value))
 
   const result = await fetch(url).then(response => response.json())
@@ -94,13 +97,18 @@ async function get_cards(concat) {
 }
 
 function apply_filter(filter) {
-  card_order.value = filter
+  card_filter.value = filter
+  refresh_cards()
+}
+
+function apply_order(order) {
+  card_order.value = order
   refresh_cards()
 }
 
 function refresh_cards() {
   // get_all_cards_status.value = "loading"
-  // card_limit.value = String(400)
+  // card_limit.value = String(props['card_limit'] * page.value)
   page.value = 0
   pageFullLoaded.value = false
   get_cards()
@@ -173,6 +181,7 @@ watch(is_card_updated, (newV, oldV) => {
 
     <div class="filters">
       <list-search @search_text="(s) => search_card(s)"/>
+      <list-orders @order="(o) => apply_order(o)"/>
       <list-filters @filter="(f) => apply_filter(f)"/>
     </div>
 
