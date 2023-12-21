@@ -31,7 +31,7 @@ function handle_click(event, emit_val) {
 
   <p>Filters:</p>
   <button class="button_filters" @click="handle_click($event,'staple')">Staple</button>
-  <button class="button_filters" @click="handle_click($event,'expensive')">Expensive</button>
+  <button class="button_filters" @click="handle_click($event,'expensive')">More than $1</button>
 
 </template>
 

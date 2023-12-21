@@ -47,7 +47,7 @@ function emit_card() {
 <style scoped>
 .card {
   /*outline: 1px solid red;*/
-  /*margin-bottom: 10px;*/
+  margin-bottom: 10px;
 }
 
 .card_body {

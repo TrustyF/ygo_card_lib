@@ -53,7 +53,7 @@ function parse_price(price) {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: -3px;
+  /*margin-top: 3px;*/
   /*gap: 10px;*/
   /*outline: 1px solid red;*/
 }
@@ -91,15 +91,15 @@ h3 {
 
 @media only screen and (max-width: 400px) {
   h1 {
-    font-size: 0.5em;
+    font-size: 0.8em;
   }
 
   h2 {
-    font-size: 0.4em;
+    font-size: 0.6em;
   }
 
   h3 {
-    font-size: 0.5em;
+    font-size: 0.7em;
   }
 }
 </style>
