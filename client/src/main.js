@@ -6,7 +6,7 @@ import router from './router'
 import VueLazyLoad from 'vue-lazyload'
 import LoadGif from '/cards/Card_loading.jpg'
 
-const local_api = "http://backend:5000";
+const local_api = "/api";
 const dev_mode = true;
 const debug_mode = import.meta.env.DEV;
 
