@@ -67,13 +67,13 @@ function toggle_option(option) {
   <!--  <div class="hit_box" @click="visible = !visible"></div>-->
   <div style="position: relative;">
     <button v-if="debug_mode"
-            style="border: 0 solid white;border-radius: 50%;width: 12px;height: 12px;position: absolute;z-index: 25;left:0;bottom: 0"
+            style="border: 0 solid white;border-radius: 50%;width: 12px;height: 12px;position: absolute;z-index: 25; bottom: -15px"
             @click="visible = !visible"></button>
 
     <div class="buttons_wrapper" v-if="visible">
 
       <div class="main_list_button" @click="delete_card(card['user_card_id'])">x</div>
-      <div class="main_list_button" @click="update_card(card['user_card_id'],'is_sold',0)">0x</div>
+      <div class="main_list_button" @click="update_card(card['user_card_id'],'is_sold',0)">sold</div>
 
 
       <div>

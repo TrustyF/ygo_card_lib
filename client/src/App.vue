@@ -3,6 +3,7 @@ import {RouterLink, RouterView} from 'vue-router'
 import {ref, provide, computed, inject, onMounted} from "vue";
 import NavBarMain from "./components/navbar/NavBarMain.vue";
 import PageLoading from "./components/generic/PageLoading.vue";
+import CardMaster from "@/components/card/CardMaster.vue";
 
 const curr_api = inject("curr_api");
 const debug_mode = inject("debug_mode");
@@ -39,7 +40,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <p style="position:absolute;z-index: 100;right: 10px" v-if="debug_mode">Using {{curr_api}}</p>
+  <p style="position:absolute;z-index: 100;right: 10px" v-if="debug_mode">Using {{ curr_api }}</p>
   <nav-bar-main></nav-bar-main>
   <div class="main_wrapper">
     <RouterView/>
