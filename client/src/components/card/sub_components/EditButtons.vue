@@ -19,7 +19,7 @@ const card_damages = ["Light played", "Played", "Poor", "Damaged", "null"]
 async function delete_card(card_id) {
   console.log('delete', card_id)
 
-  const url = new URL(`${curr_api}/card/delete`)
+  const url = `${curr_api}/card/delete`
   url.searchParams.set('id', String(card_id))
 
   const result = await fetch(url)
@@ -31,9 +31,9 @@ async function update_card(user_card_id, attr_name, attribute) {
   let url
 
   if (typeof attribute === 'number') {
-    url = new URL(`${curr_api}/card/i_update`)
+    url = `${curr_api}/card/i_update`
   } else {
-    url = new URL(`${curr_api}/card/s_update`)
+    url = `${curr_api}/card/s_update`
   }
 
   url.searchParams.set('id', String(user_card_id))
