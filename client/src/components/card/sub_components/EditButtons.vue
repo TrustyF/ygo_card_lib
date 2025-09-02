@@ -67,7 +67,7 @@ function toggle_option(option) {
   <!--  <div class="hit_box" @click="visible = !visible"></div>-->
   <div style="position: relative;">
     <button v-if="debug_mode"
-            style="border: 0 solid white;border-radius: 50%;width: 12px;height: 12px;position: absolute;z-index: 25;left:0;"
+            style="border: 0 solid white;border-radius: 50%;width: 12px;height: 12px;position: absolute;z-index: 25;left:0;bottom: 0"
             @click="visible = !visible"></button>
 
     <div class="buttons_wrapper" v-if="visible">
