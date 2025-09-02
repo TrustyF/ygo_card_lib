@@ -8,7 +8,7 @@ import LoadGif from '/cards/Card_loading.jpg'
 
 const local_api =  window.location.origin + "/api";
 const dev_mode = true;
-const debug_mode = import.meta.env.DEV;
+const debug_mode = true;
 
 const curr_api = local_api
 
