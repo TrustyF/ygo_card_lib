@@ -19,7 +19,7 @@ let card_image = ref()
 function find_by_name(text) {
   console.log(text)
 
-  const url = `${curr_api}/card/get_template`
+  const url = new URL(`${curr_api}/card/get_template`)
   url.searchParams.set('search', text)
 
   fetch(url)
@@ -35,7 +35,7 @@ function find_by_name(text) {
 async function get_new_cards() {
   console.log('getting cards')
 
-  const url = `${curr_api}/card/get`
+  const url = new URL(`${curr_api}/card/get`)
 
   url.searchParams.set('card_limit', String(5))
   url.searchParams.set('card_page', String(0))
@@ -45,7 +45,7 @@ async function get_new_cards() {
 }
 
 function add_card(id) {
-  const url = `${curr_api}/card/add`
+  const url = new URL(`${curr_api}/card/add`)
   url.searchParams.set('id', id)
   url.searchParams.set('storage_id', String(default_storage.value))
 

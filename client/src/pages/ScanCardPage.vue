@@ -47,7 +47,7 @@ let polling_cards = ref(undefined)
 
 function get_slider_settings() {
 
-  fetch(`${curr_api}/card_detector/get_settings`)
+  fetch(new URL(`${curr_api}/card_detector/get_settings`))
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -67,7 +67,7 @@ function set_slider_settings(slider) {
     'slider_value': parseInt(slider.target.value)
   }
 
-  fetch(`${curr_api}/card_detector/set_settings`, {
+  fetch(new URL(`${curr_api}/card_detector/set_settings`), {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(params)
@@ -80,7 +80,7 @@ function set_slider_settings(slider) {
 function start_detection() {
   is_detecting.value = !is_detecting.value
 
-  const url = `${curr_api}/card_detector/start_detection`
+  const url = new URL(`${curr_api}/card_detector/start_detection`)
   url.searchParams.set('state', String(is_detecting.value))
   fetch(url)
       .then(response => response.json())
@@ -102,7 +102,7 @@ function poll_cards() {
 }
 
 function toggle_webcam_feed(state) {
-  const url = `${curr_api}/card_detector/toggle_feed`
+  const url = new URL(`${curr_api}/card_detector/toggle_feed`)
   url.searchParams.set('state', state)
   fetch(url)
       .then(() => {

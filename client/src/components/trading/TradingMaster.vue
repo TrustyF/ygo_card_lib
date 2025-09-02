@@ -35,7 +35,7 @@ let trade_price_color = computed(() => {
 async function get_templates(text) {
   console.log(text)
 
-  const url = `${curr_api}/card/get_template`
+  const url = new URL(`${curr_api}/card/get_template`)
   url.searchParams.set('search', text)
   url.searchParams.set('limit', String(4))
 
@@ -44,7 +44,7 @@ async function get_templates(text) {
 
 async function get_card(text) {
   console.log(text)
-  const url = `${curr_api}/card/get`
+  const url = new URL(`${curr_api}/card/get`)
   if (text !== undefined || text === "") url.searchParams.set('search', text)
   url.searchParams.set('card_limit', String(3))
   url.searchParams.set('card_page', String(0))
@@ -58,7 +58,7 @@ function add_from_lib(index, array) {
 }
 
 async function add_template(id, array) {
-  const url = `${curr_api}/card/get_real_card`
+  const url = new URL(`${curr_api}/card/get_real_card`)
   url.searchParams.set('id', String(id))
 
   const result = await fetch(url).then(response => response.json())
@@ -76,7 +76,7 @@ function clear(index, array) {
 
 function mark_cards_as_sold(array) {
   array.forEach((elem) => {
-    const url = `${curr_api}/card/i_update`
+    const url = new URL(`${curr_api}/card/i_update`)
     url.searchParams.set('id', String(elem['user_card_id']))
     url.searchParams.set('attrib', 'is_sold')
     url.searchParams.set('value', String(1))
@@ -88,7 +88,7 @@ function mark_cards_as_sold(array) {
 function add_cards_to_permanent_library(array) {
   array.forEach((elem) => {
     console.log(elem)
-    const url = `${curr_api}/card/add`
+    const url = new URL(`${curr_api}/card/add`)
     url.searchParams.set('id', String(elem['card_template_id']))
     url.searchParams.set('code_id', String(elem['card_id']))
     url.searchParams.set('storage_id', '10')

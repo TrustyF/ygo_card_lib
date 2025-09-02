@@ -70,7 +70,7 @@ function group_same_cards(array) {
 async function get_cards(concat) {
   console.log('getting cards')
 
-  const url = `${curr_api}/card/get`
+  const url = new URL(`${curr_api}/card/get`)
 
   if (search_text.value !== undefined || search_text.value === "") url.searchParams.set('search', search_text.value)
   if (card_limit.value !== undefined) url.searchParams.set('card_limit', String(card_limit.value))
