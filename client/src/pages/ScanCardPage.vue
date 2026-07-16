@@ -152,7 +152,7 @@ onUnmounted(() => {
     </div>
 
     <div class="card_list">
-      <card-list card_limit="10" card_order="new"></card-list>
+      <card-list card_limit="10" card_order="new" :scroll_load="false"></card-list>
     </div>
 
   </div>
@@ -165,17 +165,17 @@ onUnmounted(() => {
   /*gap: 20px;*/
   flex-flow: row nowrap;
   /*width: 100vw;*/
-  height: 95vh;
+  /*height: 95vh;*/
 }
 
 .card_list {
-  outline: 5px solid purple;
-  margin: auto;
+  /*outline: 5px solid purple;*/
+  /*margin: auto;*/
   width: 60%;
 }
 
 .webcams {
-  outline: 5px solid purple;
+  /*outline: 5px solid purple;*/
 
   width: 35%;
   margin: auto;

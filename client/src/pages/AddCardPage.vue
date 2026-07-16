@@ -50,13 +50,13 @@ function add_card(id) {
   url.searchParams.set('storage_id', String(default_storage.value))
 
   fetch(url)
-      .then(response => response.json())
       .then(data => {
         console.log(data);
         is_card_updated.value = true
         get_new_cards()
       })
       .catch(error => {
+        console.log(error)
       })
 }
 

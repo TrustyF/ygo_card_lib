@@ -18,7 +18,8 @@ const card_storages = [
   {"name": "Black_deck_box", "id": 2},
   {"name": "Large_black_deck_box", "id": 3},
   {"name": "Dark_side_of_dimensions_deck_box", "id": 4},
-  {"name": "Yugi_Muto_&_Yami_Yugi_Mega-Tin", "id": 6}
+  {"name": "Yugi_Muto_&_Yami_Yugi_Mega-Tin", "id": 6},
+  {"name": "Joey's_world_box", "id": 12}
 ];
 
 provide("card_size", card_size);

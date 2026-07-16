@@ -6,7 +6,7 @@ import ListSearch from "./sub_components/ListSearch.vue";
 import ListFilters from "./sub_components/ListFilters.vue";
 import ListOrders from "./sub_components/ListOrders.vue";
 
-let props = defineProps(["card_limit", "card_order", "storage"]);
+let props = defineProps(["card_limit", "card_order", "storage","scroll_load"]);
 const curr_api = inject("curr_api");
 const card_size = inject("card_size");
 const debug_mode = inject("debug_mode");
@@ -16,6 +16,7 @@ const card_width = computed(() => String(card_size.value[0]) + 'px')
 const card_order = ref(props['card_order'] !== undefined ? props['card_order'] : 'price')
 const card_filter = ref()
 const card_limit = ref(props['card_limit'])
+const scroll_load = ref(props['scroll_load'])
 const card_storage = computed(() => {
   if (props['storage'] !== undefined) return props['storage']['id']
   else return undefined
@@ -122,6 +123,7 @@ function search_card(text) {
 }
 
 const handleInfiniteScroll = () => {
+  if (scroll_load.value === false) return;
   if (pageLoading.value) {
     console.log('page loading', 'handleInfiniteScroll')
     return;
