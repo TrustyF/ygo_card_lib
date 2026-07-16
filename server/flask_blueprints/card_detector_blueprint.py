@@ -12,6 +12,7 @@ bp = Blueprint('card_detector', __name__)
 
 @bp.route("/get_webcam_feed", methods=["GET"])
 def get_webcam_feed():
+    webcam.start_webcam()
     return Response(webcam.get_stream(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 

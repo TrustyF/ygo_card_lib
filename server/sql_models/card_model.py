@@ -44,7 +44,7 @@ class CardTemplate(db.Model):
     race: str = db.Column(db.String(80))
     archetype: str = db.Column(db.String(80))
 
-    image_hash: str = db.Column(db.String(255))
+    image_hash: str = db.Column(db.String(300))
 
     ban_ocg: str = db.Column(db.String(80))
     ban_tcg: str = db.Column(db.String(80))

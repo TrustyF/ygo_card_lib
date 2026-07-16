@@ -266,6 +266,6 @@ def hash_images():
 def run_update():
     # if not check_remote_version_current():
     if True:
-        map_remote_to_db()
+        # map_remote_to_db()
         # download_images()
-        # hash_images()
+        hash_images()

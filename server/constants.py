@@ -3,14 +3,15 @@ from sqlalchemy import case
 from sql_models.card_model import CardTemplate
 
 MAIN_DIR = os.path.dirname(os.path.abspath(__file__))
-HASH_SIZE = 14
+HASH_SIZE = 32
 
-DB_HOST = "db"
+DB_HOST = os.getenv("DATABASE_HOST", "localhost")
+DB_PORT = int(os.getenv("DATABASE_PORT", "3307"))
 DB_USER = "user"
 DB_PASSWORD = "password"
 DB_NAME = "ygo_cards_db"
 
-LOCAL_DATABASE_URI = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:3306/{DB_NAME}"
+LOCAL_DATABASE_URI = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 
 SMALL_IMAGES_PATH = os.path.join(MAIN_DIR, "assets", "card_images_cached")

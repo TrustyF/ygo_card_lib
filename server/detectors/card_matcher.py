@@ -3,6 +3,8 @@ import imagehash
 from PIL import Image
 import os
 
+from sqlalchemy.orm import Session
+
 from constants import HASH_SIZE, MAIN_DIR
 from db_loader import db,db_session
 from sql_models.card_model import Card, CardSet, UserCard, CardTemplate
@@ -37,12 +39,18 @@ class CardMatcher:
 
         # find card
         closest_hash = min(self.card_hashes, key=lambda x: abs(x - image_hash))
+        distance = abs(closest_hash - image_hash)
+
+        if distance > 500:
+            print(f'hash distance is {distance}, too far to add')
+            return None
+
         closest_card = db.session.query(CardTemplate).filter(CardTemplate.image_hash == str(closest_hash)).first()
 
         # add to lib
         scanned = UserCard(card_template_id=closest_card.id)
         db.session.add(scanned)
         db.session.commit()
-        # db.session.close()
+        db.session.remove()
 
         print(f"{closest_card.name} {closest_card.card_id} added")
